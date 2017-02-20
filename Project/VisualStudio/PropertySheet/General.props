@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IntDir>$(SolutionDir)Intermediate\$(Configuration)_$(PlatformTarget)\</IntDir>
+    <OutDir>$(SolutionDir)..\..\Build\$(Configuration)_$(PlatformTarget)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(SolutionDir)..\..\Bin\$(PlatformTarget)\*.dll" "$(OutDir)"
+xcopy /y /d "$(SolutionDir)..\..\Bin\$(PlatformTarget)\$(Configuration)\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Include\$(PlatformTarget)\</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\Library\$(PlatformTarget)\;$(SolutionDir)..\..\Library\$(PlatformTarget)\$(Configuration)\SFML\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
