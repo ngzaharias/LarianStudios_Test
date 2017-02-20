@@ -3,13 +3,42 @@
 #include "Ball.h"
 #include "Brick.h"
 #include "Paddle.h"
+#include "Wall.h"
 
 #include <SFML/Graphics.hpp>
 
 Map::Map()
 {
-	m_paddle = new Paddle();
-	m_ball = new Ball();
+	m_physics = new Physics();
+	m_actors.reserve(64);
+}
+
+Map::~Map()
+{
+	delete m_physics;
+}
+
+void Map::Load()
+{
+	//TODO: 
+	// - settings
+	// - load from file
+
+	//walls
+	{
+		Wall* wallTop = new Wall(sf::Vector2f(400.0f, -100.0f), sf::Vector2f(800.0f, 200.0f));
+		Wall* wallBottom = new Wall(sf::Vector2f(400.0f, 700.0f), sf::Vector2f(800.0f, 200.0f));
+		Wall* wallLeft = new Wall(sf::Vector2f(-100.0f, 300.0f), sf::Vector2f(200.0f, 600.0f));
+		Wall* wallRight = new Wall(sf::Vector2f(900.0f, 300.0f), sf::Vector2f(200.0f, 600.0f));
+		m_physics->RegisterStatic(wallTop);
+		m_physics->RegisterStatic(wallBottom);
+		m_physics->RegisterStatic(wallLeft);
+		m_physics->RegisterStatic(wallRight);
+		m_actors.push_back(wallTop);
+		m_actors.push_back(wallBottom);
+		m_actors.push_back(wallLeft);
+		m_actors.push_back(wallRight);
+	}
 
 	// TODO: Spawn Pool
 	sf::Vector2f brickSize = sf::Vector2f(90, 40);
@@ -19,118 +48,53 @@ Map::Map()
 		{
 			sf::Vector2f position = sf::Vector2f(x * 100.0f, y * 50.0f);
 			Brick* brick = new Brick(position, brickSize);
-			m_bricks.push_back(brick);
+			brick->Initialise();
+			m_physics->RegisterStatic(brick);
+			m_actors.push_back(brick);
 		}
 	}
-}
 
-Map::~Map()
-{
-	delete m_paddle;
-	delete m_ball;
-
-	for (size_t i = 0; i < m_bricks.size(); ++i)
 	{
-		delete m_bricks[i];
+		Paddle* paddle = new Paddle();
+		paddle->Initialise();
+		m_physics->RegisterDynamic(paddle);
+		m_actors.push_back(paddle);
 	}
-	m_bricks.clear();
-}
 
-void Map::Load()
-{
-	//TODO: Load from file
-
-	m_paddle->Initialise();
-	m_ball->Initialise();
-
-	for (size_t i = 0; i < m_bricks.size(); ++i)
 	{
-		Brick* brick = m_bricks[i];
-		if (brick != nullptr)
-		{
-			m_bricks[i]->Initialise();
-		}
+		//TODO: Implement render layers
+		//HACK: done last to ensure it renders on top
+		Ball* ball = new Ball();
+		ball->Initialise();
+		m_physics->RegisterDynamic(ball);
+		m_actors.push_back(ball);
 	}
 }
 
 void Map::Unload()
 {
-	m_paddle->Destroy();
-	m_ball->Destroy();
-
-	for (size_t i = 0; i < m_bricks.size(); ++i)
+	for (size_t i = 0; i < m_actors.size(); ++i)
 	{
-		Brick* brick = m_bricks[i];
-		if (brick != nullptr)
-		{
-			m_bricks[i]->Destroy();
-		}
+		m_actors[i]->Destroy();
+		delete m_actors[i];
 	}
 }
 
 void Map::Update(sf::RenderWindow* window, float delta)
 {
-	//TODO:
-	// - change to collision components
-	// - move to a fixed update
-
-	// collision
-	CheckCollision(m_ball, m_paddle);
-	for (size_t i = 0; i < m_bricks.size(); ++i)
-	{
-		CheckCollision(m_ball, m_bricks[i]);
-	}
+	m_physics->Update();
 
 	// update objects
-	m_paddle->Update(window, delta);
-	m_ball->Update(window, delta);
-
-	for (size_t i = 0; i < m_bricks.size(); ++i)
+	for (size_t i = 0; i < m_actors.size(); ++i)
 	{
-		Brick* brick = m_bricks[i];
-		if (brick != nullptr)
-		{
-			brick->Update(window, delta);
-		}
+		m_actors[i]->Update(window, delta);
 	}
 }
 
 void Map::Draw(sf::RenderWindow* window)
 {
-	for (size_t i = 0; i < m_bricks.size(); ++i)
+	for (size_t i = 0; i < m_actors.size(); ++i)
 	{
-		Brick* brick = m_bricks[i];
-		if (brick != nullptr)
-		{
-			brick->Draw(window);
-		}
+		m_actors[i]->Draw(window);
 	}
-
-	m_paddle->Draw(window);
-	m_ball->Draw(window);
-}
-
-void Map::CheckCollision(Ball* ball, Brick* brick)
-{
-	//AABB first
-	sf::FloatRect brickRect = brick->m_sprite.getGlobalBounds();
-	sf::FloatRect ballRect = ball->m_sprite.getGlobalBounds();
-	if (ballRect.intersects(brickRect) == false)
-		return;
-
-	//TODO: destroy the brick
-
-	ball->HandleOnCollision();
-}
-
-void Map::CheckCollision(Ball* ball, Paddle* paddle)
-{
-	//AABB first
-	sf::FloatRect paddleRect = paddle->m_sprite.getGlobalBounds();
-	sf::FloatRect ballRect = ball->m_sprite.getGlobalBounds();
-
-	if (ballRect.intersects(paddleRect) == false)
-		return;
-
-	ball->HandleOnCollision();
 }

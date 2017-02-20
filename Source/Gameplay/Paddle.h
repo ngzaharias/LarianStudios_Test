@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
-class Paddle : Actor
+class Paddle : public Actor
 {
 	typedef Actor Base;
 

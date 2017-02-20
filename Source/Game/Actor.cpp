@@ -1,28 +1,7 @@
 #include "Actor.h"
 
-#include <SFML/Graphics.hpp>
-
-Actor::Actor()
+bool Actor::IsIntersecting(const Actor& a, const Actor& b)
 {
-}
-
-Actor::~Actor()
-{
-}
-
-void Actor::Initialise()
-{
-}
-
-void Actor::Destroy()
-{
-}
-
-void Actor::Update(sf::RenderWindow* window, float delta)
-{
-}
-
-void Actor::Draw(sf::RenderWindow* window)
-{
+	return a.m_collider.intersects(b.m_collider);
 }
 

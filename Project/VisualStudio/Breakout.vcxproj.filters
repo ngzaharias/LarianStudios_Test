@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Utility\Containers">
       <UniqueIdentifier>{16ca3b02-aae6-4b5e-bc17-d088f35a2d33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{19fbf46a-bb57-4cde-a184-0078a2912e07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Main.cpp">
@@ -52,6 +55,12 @@
       <Filter>Source Files\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Gameplay\Paddle.cpp">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Physics.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Gameplay\Wall.cpp">
       <Filter>Source Files\Gameplay</Filter>
     </ClCompile>
   </ItemGroup>
@@ -85,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Gameplay\Paddle.h">
       <Filter>Source Files\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Physics.h">
+      <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gameplay\Wall.h">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Random.h">
+      <Filter>Source Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

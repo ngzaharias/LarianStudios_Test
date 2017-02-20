@@ -8,9 +8,11 @@ namespace sf
 	class RenderWindow;
 }
 
+class Actor;
 class Ball;
 class Brick;
 class Paddle;
+class Physics;
 
 class Map
 {
@@ -25,13 +27,9 @@ public:
 	void Update(sf::RenderWindow* window, float delta);
 	void Draw(sf::RenderWindow* window);
 
-	void CheckCollision(Ball* ball, Brick* brick);
-	void CheckCollision(Ball* ball, Paddle* paddle);
-
 protected:
-	Paddle* m_paddle;
-	Ball* m_ball;
-	std::vector<Brick*> m_bricks;
+	Physics* m_physics;
+	std::vector<Actor*> m_actors;
 
 };
 #endif

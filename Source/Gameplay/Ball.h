@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
-class Ball : Actor
+class Ball : public Actor
 {
 	typedef Actor Base;
 
@@ -20,7 +20,7 @@ public:
 	virtual void Update(sf::RenderWindow* window, float delta) override;
 	virtual void Draw(sf::RenderWindow* window) override;
 
-	virtual void HandleOnCollision();
+	virtual void HandleOnCollision(const HitInfo& hitInfo) override;
 
 public:
 	sf::RectangleShape m_sprite;
