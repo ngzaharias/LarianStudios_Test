@@ -7,7 +7,8 @@ public:
 	Application();
 	virtual ~Application();
 
-	virtual void Run(int agrc, char* argv[]);
+	void Run(int agrc, char* argv[]);
+	void Quit();
 
 protected:
 	virtual bool Initialise(int agrc, char* argv[]) = 0;
@@ -15,6 +16,9 @@ protected:
 
 	virtual bool Update() = 0;
 	virtual bool Draw() = 0;
+
+protected:
+	bool m_isForceQuitting = false;
 };
 #endif
 //EOF

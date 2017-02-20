@@ -5,8 +5,11 @@
 
 namespace sf
 {
+	class Clock;
 	class RenderWindow;
 }
+
+class Game;
 
 class GameApplication : public Application
 {
@@ -22,7 +25,10 @@ protected:
 	virtual bool Draw() override;
 
 protected:
+	sf::Clock* m_clock;
 	sf::RenderWindow* m_window;
+
+	Game* m_game;
 };
 #endif
 //EOF

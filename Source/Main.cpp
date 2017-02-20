@@ -1,10 +1,12 @@
 #include "Application.h"
 #include "Game/GameApplication.h"
 
+Application* application = nullptr;
+
 int main(int agrc, char* argv[])
 {
-	Application* game = new GameApplication();
-	game->Run(agrc, argv);
+	application = new GameApplication();
+	application->Run(agrc, argv);
 	return 0;
 }
 //EOF

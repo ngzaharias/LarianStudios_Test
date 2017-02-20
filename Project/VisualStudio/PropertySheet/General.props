@@ -13,6 +13,7 @@ xcopy /y /d "$(SolutionDir)..\..\Bin\$(PlatformTarget)\$(Configuration)\*.dll" "
     </PostBuildEvent>
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)..\..\Source\;$(SolutionDir)..\..\Include\$(PlatformTarget)\</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Library\$(PlatformTarget)\;$(SolutionDir)..\..\Library\$(PlatformTarget)\$(Configuration)\SFML\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

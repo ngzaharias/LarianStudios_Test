@@ -20,12 +20,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Application.cpp" />
+    <ClCompile Include="..\..\Source\Gameplay\Ball.cpp" />
+    <ClCompile Include="..\..\Source\Gameplay\Brick.cpp" />
+    <ClCompile Include="..\..\Source\Gameplay\Map.cpp" />
+    <ClCompile Include="..\..\Source\Gameplay\Paddle.cpp" />
+    <ClCompile Include="..\..\Source\Game\Actor.cpp" />
+    <ClCompile Include="..\..\Source\Game\Game.cpp" />
     <ClCompile Include="..\..\Source\Game\GameApplication.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Application.h" />
+    <ClInclude Include="..\..\Source\Gameplay\Ball.h" />
+    <ClInclude Include="..\..\Source\Gameplay\Brick.h" />
+    <ClInclude Include="..\..\Source\Gameplay\Map.h" />
+    <ClInclude Include="..\..\Source\Gameplay\Paddle.h" />
+    <ClInclude Include="..\..\Source\Game\Actor.h" />
+    <ClInclude Include="..\..\Source\Game\Game.h" />
     <ClInclude Include="..\..\Source\Game\GameApplication.h" />
+    <ClInclude Include="..\..\Source\Utility\Containers\Grid.h" />
+    <ClInclude Include="..\..\Source\Utility\Math.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2471547F-763A-49BA-9A17-6814171F1849}</ProjectGuid>

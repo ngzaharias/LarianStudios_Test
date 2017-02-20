@@ -16,6 +16,15 @@
     <Filter Include="Source Files\Game">
       <UniqueIdentifier>{1bd0306f-8217-47df-8a06-22a8ccabf05f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Utility">
+      <UniqueIdentifier>{2fafc77b-4176-4f69-8f51-5bafe15cde62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gameplay">
+      <UniqueIdentifier>{a1c62337-e48d-4031-b04b-798d84a0f405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utility\Containers">
+      <UniqueIdentifier>{16ca3b02-aae6-4b5e-bc17-d088f35a2d33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Main.cpp">
@@ -27,6 +36,24 @@
     <ClCompile Include="..\..\Source\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Game\Game.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Game\Actor.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Gameplay\Ball.cpp">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Gameplay\Brick.cpp">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Gameplay\Map.cpp">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Gameplay\Paddle.cpp">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Application.h">
@@ -34,6 +61,30 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Game\GameApplication.h">
       <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Game\Game.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Game\Actor.h">
+      <Filter>Source Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Containers\Grid.h">
+      <Filter>Source Files\Utility\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\Math.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gameplay\Ball.h">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gameplay\Brick.h">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gameplay\Map.h">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gameplay\Paddle.h">
+      <Filter>Source Files\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
