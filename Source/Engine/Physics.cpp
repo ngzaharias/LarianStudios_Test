@@ -56,7 +56,7 @@ bool Physics::CheckCollision(Rigidbody& rigidbody, Collider& collider, float del
 	if (rigidbody.collider == nullptr)
 		return false;
 
-	//TODO: stepping
+	//TODO: physics stepping
 	Collider step = *rigidbody.collider;
 	step.rectangle.left += rigidbody.velocity.x * delta;
 	step.rectangle.top += rigidbody.velocity.y * delta;
@@ -74,7 +74,6 @@ void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float de
 	Collider step = b1;
 	step.rectangle.left += rigidbody.velocity.x * delta;
 	step.rectangle.top += rigidbody.velocity.y * delta;
-
 
 	// distance of box 'b2' to face on 'left' side of 'b1'.
 	// distance of box 'b2' to face on 'right' side of 'b1'

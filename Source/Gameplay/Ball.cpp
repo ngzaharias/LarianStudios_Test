@@ -14,7 +14,7 @@
 
 Ball::Ball()
 {
-	//TODO: settings file/class
+	//TODO: settings file/struct
 	m_sprite.setFillColor(sf::Color::Green);
 	m_sprite.setSize(sf::Vector2f(20.0f, 20.0f));
 
@@ -90,12 +90,15 @@ void Ball::HandleOnCollision(const HitInfo& hitInfo)
 	{
 		m_rigidbody.velocity = VectorHelper::Reflect(m_rigidbody.velocity, hitInfo.normal);
 
-		//TODO: settings file/class
-		// speed up the ball to a max
-		float magnitude = VectorHelper::Magnitude(m_rigidbody.velocity);
-		sf::Vector2f normal = m_rigidbody.velocity / magnitude;
-		magnitude = Math::Min(magnitude + 500.0f, 5000.0f);
-		m_rigidbody.velocity = normal * magnitude;
+		if (isPaddle == true)
+		{
+			//TODO: settings file/class
+			// speed up the ball to a max
+			float magnitude = VectorHelper::Magnitude(m_rigidbody.velocity);
+			sf::Vector2f normal = m_rigidbody.velocity / magnitude;
+			magnitude = Math::Min(magnitude + 500.0f, 5000.0f);
+			m_rigidbody.velocity = normal * magnitude;
+		}
 	}
 	else if (isRespawnZone == true)
 	{
