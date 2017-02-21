@@ -31,6 +31,9 @@
     <ClCompile Include="..\..\Source\Game\Game.cpp" />
     <ClCompile Include="..\..\Source\Game\GameApplication.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
+    <ClCompile Include="..\..\Source\Utility\Math.cpp" />
+    <ClCompile Include="..\..\Source\Utility\Random.cpp" />
+    <ClCompile Include="..\..\Source\Utility\VectorHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Application.h" />

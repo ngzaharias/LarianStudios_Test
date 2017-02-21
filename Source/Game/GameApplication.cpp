@@ -9,6 +9,9 @@
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
 
+#include <random>
+#include <time.h>
+
 GameApplication::GameApplication()
 {
 	m_clock = new sf::Clock();
@@ -18,6 +21,8 @@ GameApplication::GameApplication()
 	Screen::SetWindow(m_window);
 
 	m_game = new Game();
+
+	srand((unsigned int)time(NULL));
 }
 
 GameApplication::~GameApplication()

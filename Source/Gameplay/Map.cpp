@@ -82,10 +82,6 @@ void Map::Unload()
 
 void Map::Update(float delta)
 {
-	//TODO: fixed update
-	// physics first
-	m_physics->Update();
-
 	std::vector<Actor*>::iterator itr = m_actors.begin();
 	std::vector<Actor*>::iterator end = m_actors.end();
 	for (; itr != end; ++itr)
@@ -96,6 +92,9 @@ void Map::Update(float delta)
 			actor->Update(delta);
 		}
 	}
+
+	//TODO: fixed update
+	m_physics->Update(delta);
 
 	CleanupActors();
 }

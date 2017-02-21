@@ -1,6 +1,8 @@
 #include "Physics.h"
 
 #include "Game/Actor.h"
+#include "Utility/Math.h"
+#include "Utility/VectorHelper.h"
 
 Physics::Physics()
 {
@@ -12,7 +14,7 @@ Physics::~Physics()
 {
 }
 
-void Physics::Update()
+void Physics::Update(float delta)
 {
 	//TODO: spatial partitioning
 
@@ -26,6 +28,7 @@ void Physics::Update()
 			Rigidbody& a = *(*rigidbody);
 
 			// loop through static objects
+			bool isColliding = false;
 			std::vector<Collider*>::iterator collider = m_colliders.begin();
 			std::vector<Collider*>::iterator colliderEnd = m_colliders.end();
 			for (; collider != colliderEnd; ++collider)
@@ -33,35 +36,78 @@ void Physics::Update()
 				if ((*collider) != nullptr && (*collider) != &a.collider)
 				{
 					Collider& b = *(*collider);
-					CheckCollision(a.collider, b);
+					if (CheckCollision(a, b, delta) == true)
+					{
+						HandleCollision(a, b, delta);
+						goto collisionHandled;
+					}
 				}
 			}
+
+			a.collider.rectangle.left += a.velocity.x * delta;
+			a.collider.rectangle.top += a.velocity.y * delta;
+			collisionHandled:;
 		}
 	}
 }
 
-void Physics::CheckCollision(Collider& a, Collider& b)
+bool Physics::CheckCollision(Rigidbody& rigidbody, Collider& collider, float delta)
 {
-	if (Collider::IsIntersecting(a, b) == true)
+	//TODO: stepping
+	Collider step = rigidbody.collider;
+	step.rectangle.left += rigidbody.velocity.x * delta;
+	step.rectangle.top += rigidbody.velocity.y * delta;
+
+	if (Collider::IsIntersecting(step, collider) == false)
+		return false;
+
+	return true;
+}
+
+void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float delta)
+{
+	Collider step = rigidbody.collider;
+	step.rectangle.left += rigidbody.velocity.x * delta;
+	step.rectangle.top += rigidbody.velocity.y * delta;
+
+	Collider& b1 = rigidbody.collider;
+	Collider& b2 = collider;
+
+	// distance of box 'b2' to face on 'left' side of 'b1'.
+	// distance of box 'b2' to face on 'right' side of 'b1'
+	// distance of box 'b2' to face on 'top' side of 'b1'.
+	// distance of box 'b2' to face on 'bottom' side of 'b1'.
+	float left = (b2.rectangle.left + b2.rectangle.width) - step.rectangle.left;
+	float right = (step.rectangle.left + step.rectangle.width) - b2.rectangle.left;
+	float top = (step.rectangle.top + step.rectangle.height) - b2.rectangle.top;
+	float bottom = (b2.rectangle.top + b2.rectangle.height) - step.rectangle.top;
+
+	sf::Vector2f normal;
+	float minX = Math::Min(left, right);
+	float minY = Math::Min(top, bottom);
+	normal.x = (minX < minY) ? (left < right) ? -1.0f : 1.0f : 0.0f;
+	normal.y = (minX < minY) ? 0.0f : (top < bottom) ? -1.0f : 1.0f;
+
+	// TODO: adjust of both axis
+	// adjust b1 by amount of intersection
+	//b1.rectangle.left = step.rectangle.left + (minX * normal.x);
+	//b1.rectangle.top = step.rectangle.top + (minY * normal.y);
+
+	// reflect the velocity
+	rigidbody.velocity = VectorHelper::Reflect(rigidbody.velocity, normal);
+
+	HitInfo box1Info(&b2);
+	box1Info.normal = normal;
+	if (b1.callback != nullptr)
 	{
-		sf::Vector2f point;
-		sf::Vector2f normal;
+		b1.callback(box1Info);
+	}
 
-		HitInfo aInfo(&b);
-		aInfo.normal = normal;
-		aInfo.point = point;
-		if (a.callback != nullptr)
-		{
-			a.callback(aInfo);
-		}
-
-		HitInfo bInfo(&a);
-		bInfo.normal = normal * -1.0f;
-		bInfo.point = point;
-		if (b.callback != nullptr)
-		{
-			b.callback(bInfo);
-		}
+	HitInfo box2Info(&b1);
+	box2Info.normal = normal * -1.0f;
+	if (b2.callback != nullptr)
+	{
+		b2.callback(box2Info);
 	}
 }
 

@@ -12,7 +12,6 @@ struct Collider;
 
 struct HitInfo
 {
-	sf::Vector2f point;
 	sf::Vector2f normal;
 	Collider* collider;
 
@@ -49,9 +48,10 @@ public:
 	~Physics();
 
 public:
-	void Update();
+	void Update(float delta);
 
-	void CheckCollision(Collider& a, Collider& b);
+	bool CheckCollision(Rigidbody& a, Collider& b, float delta);
+	void HandleCollision(Rigidbody& a, Collider& b, float delta);
 
 	Collider& CreateCollider();
 	void DestroyCollider(Collider& collider);

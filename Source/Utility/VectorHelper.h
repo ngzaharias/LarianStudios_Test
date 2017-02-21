@@ -3,21 +3,12 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <cmath>
-
 namespace VectorHelper
 {
-	float Magnitude(const sf::Vector2f value)
-	{
-		float cSquared = value.x * value.x + value.y * value.y;
-		return std::sqrt(cSquared);
-	}
-
-	sf::Vector2f Normalize(const sf::Vector2f value)
-	{
-		float magnitude = Magnitude(value);
-		return value / magnitude;
-	}
+	float Dot(const sf::Vector2f& a, const sf::Vector2f& b);
+	float Magnitude(const sf::Vector2f& value);
+	sf::Vector2f Normalize(const sf::Vector2f& value);
+	sf::Vector2f Reflect(const sf::Vector2f& vector, const sf::Vector2f& normal);
 }
 
 #endif
