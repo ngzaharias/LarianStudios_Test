@@ -26,6 +26,7 @@
     <ClCompile Include="..\..\Source\Gameplay\Brick.cpp" />
     <ClCompile Include="..\..\Source\Gameplay\Map.cpp" />
     <ClCompile Include="..\..\Source\Gameplay\Paddle.cpp" />
+    <ClCompile Include="..\..\Source\Gameplay\Respawn.cpp" />
     <ClCompile Include="..\..\Source\Gameplay\Wall.cpp" />
     <ClCompile Include="..\..\Source\Game\Actor.cpp" />
     <ClCompile Include="..\..\Source\Game\Game.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="..\..\Source\Gameplay\Brick.h" />
     <ClInclude Include="..\..\Source\Gameplay\Map.h" />
     <ClInclude Include="..\..\Source\Gameplay\Paddle.h" />
+    <ClInclude Include="..\..\Source\Gameplay\Respawn.h" />
     <ClInclude Include="..\..\Source\Gameplay\Wall.h" />
     <ClInclude Include="..\..\Source\Game\Actor.h" />
     <ClInclude Include="..\..\Source\Game\Game.h" />

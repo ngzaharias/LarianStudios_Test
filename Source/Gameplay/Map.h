@@ -9,7 +9,6 @@ namespace sf
 }
 
 class Actor;
-class Physics;
 
 class Map
 {
@@ -26,13 +25,10 @@ public:
 
 	void DestroyActor(Actor* actor);
 
-	Physics* GetPhysics();
-
 private:
 	void CleanupActors();
 
 protected:
-	Physics* m_physics;
 	std::vector<Actor*> m_actors;
 	std::vector<Actor*> m_actorsToDestroy;
 

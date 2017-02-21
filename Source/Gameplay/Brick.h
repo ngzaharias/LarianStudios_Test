@@ -23,7 +23,7 @@ public:
 	virtual void Update(float delta) override;
 	virtual void Draw(sf::RenderWindow* window) override;
 
-	virtual void HandleOnCollision(const HitInfo& hitInfo);
+	void HandleOnCollision(const HitInfo& hitInfo);
 
 public:
 	sf::RectangleShape m_sprite = sf::RectangleShape();

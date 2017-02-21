@@ -23,9 +23,11 @@ public:
 	virtual void Update(float delta) override;
 	virtual void Draw(sf::RenderWindow* window) override;
 
-	virtual void HandleOnCollision(const HitInfo& hitInfo);
+	virtual sf::Vector2f GetPosition() const override;
 
-public:
+	void HandleOnCollision(const HitInfo& hitInfo);
+
+protected:
 	sf::RectangleShape m_sprite;
 	Collider* m_collider = nullptr;
 	Rigidbody* m_rigidbody = nullptr;

@@ -7,6 +7,7 @@ namespace sf
 }
 
 class Map;
+class Physics;
 
 class Game
 {
@@ -23,10 +24,12 @@ public:
 
 public: 
 	static Map* GetMap();
+	static Physics* GetPhysics();
 
 protected:
 
 	static Map* s_map;
+	static Physics* s_physics;
 };
 #endif
 

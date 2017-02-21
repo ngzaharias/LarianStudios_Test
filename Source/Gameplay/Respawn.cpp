@@ -1,4 +1,4 @@
-#include "Wall.h"
+#include "Respawn.h"
 
 #include "Engine/Physics.h"
 #include "Game/Game.h"
@@ -6,7 +6,7 @@
 
 #include <SFML/Graphics.hpp>
 
-Wall::Wall(const sf::Vector2f& position, const sf::Vector2f& size)
+Respawn::Respawn(const sf::Vector2f& position, const sf::Vector2f& size)
 {
 	m_position = position;
 
@@ -18,18 +18,22 @@ Wall::Wall(const sf::Vector2f& position, const sf::Vector2f& size)
 	m_collider->actor = this;
 }
 
-Wall::~Wall()
+Respawn::~Respawn()
 {
 	Game::GetPhysics()->DestroyCollider(*m_collider);
 }
 
-void Wall::Initialise()
+void Respawn::Initialise()
 {
 	Base::Initialise();
 }
 
-void Wall::Destroy()
+void Respawn::Destroy()
 {
 	Base::Destroy();
 }
 
+//void Respawn::HandleOnCollision(const HitInfo& hitInfo)
+//{
+//
+//}

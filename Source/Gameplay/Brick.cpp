@@ -15,16 +15,17 @@ Brick::Brick(sf::Vector2f position, sf::Vector2f size)
 
 	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
 
-	m_collider = &Game::GetMap()->GetPhysics()->CreateCollider();
+	m_collider = &Game::GetPhysics()->CreateCollider();
 	m_collider->rectangle.width = m_sprite.getSize().x;
 	m_collider->rectangle.height = m_sprite.getSize().y;
 	m_collider->rectangle.left = m_position.x - m_sprite.getOrigin().x;
 	m_collider->rectangle.top = m_position.y - m_sprite.getOrigin().y;
+	m_collider->actor = this;
 }
 
 Brick::~Brick()
 {
-	Game::GetMap()->GetPhysics()->DestroyCollider(*m_collider);
+	Game::GetPhysics()->DestroyCollider(*m_collider);
 }
 
 void Brick::Initialise()
@@ -47,7 +48,7 @@ void Brick::Draw(sf::RenderWindow* window)
 {
 	Base::Draw(window);
 
-	m_sprite.setPosition(m_position);
+	m_sprite.setPosition(GetPosition());
 	window->draw(m_sprite);
 }
 

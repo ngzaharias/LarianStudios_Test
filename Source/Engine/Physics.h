@@ -14,16 +14,13 @@ struct HitInfo
 {
 	sf::Vector2f normal;
 	Collider* collider;
-
-	HitInfo(Collider* collider)
-		: collider(collider)
-	{ }
 };
 
 struct Collider
 {
 	sf::FloatRect rectangle;
-	std::function<void(HitInfo&)> callback;
+	std::function<void(HitInfo&)> callback = nullptr;
+	Actor* actor = nullptr;
 
 	static bool IsIntersecting(const Collider& a, const Collider& b)
 	{

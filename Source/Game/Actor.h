@@ -22,6 +22,8 @@ public:
 	virtual void Update(float delta) { }
 	virtual void Draw(sf::RenderWindow* window) { }
 
+	virtual sf::Vector2f GetPosition() const { return m_position; }
+
 protected:
 	sf::Vector2f m_position;
 

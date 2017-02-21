@@ -9,13 +9,11 @@
 
 Map::Map()
 {
-	m_physics = new Physics();
 	m_actors.reserve(64);
 }
 
 Map::~Map()
 {
-	delete m_physics;
 }
 
 void Map::Load()
@@ -93,9 +91,6 @@ void Map::Update(float delta)
 		}
 	}
 
-	//TODO: fixed update
-	m_physics->Update(delta);
-
 	CleanupActors();
 }
 
@@ -116,11 +111,6 @@ void Map::Draw(sf::RenderWindow* window)
 void Map::DestroyActor(Actor* actor)
 {
 	m_actorsToDestroy.push_back(actor);
-}
-
-Physics* Map::GetPhysics()
-{
-	return m_physics;
 }
 
 void Map::CleanupActors()

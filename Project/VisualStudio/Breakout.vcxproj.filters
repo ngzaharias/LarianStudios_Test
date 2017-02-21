@@ -75,6 +75,9 @@
     <ClCompile Include="..\..\Source\Utility\VectorHelper.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Gameplay\Respawn.cpp">
+      <Filter>Source Files\Gameplay</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Application.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Screen.h">
       <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Gameplay\Respawn.h">
+      <Filter>Source Files\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

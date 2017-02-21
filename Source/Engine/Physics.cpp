@@ -96,14 +96,16 @@ void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float de
 	// reflect the velocity
 	rigidbody.velocity = VectorHelper::Reflect(rigidbody.velocity, normal);
 
-	HitInfo box1Info(&b2);
+	HitInfo box1Info;
+	box1Info.collider = &b2;
 	box1Info.normal = normal;
 	if (b1.callback != nullptr)
 	{
 		b1.callback(box1Info);
 	}
 
-	HitInfo box2Info(&b1);
+	HitInfo box2Info;
+	box2Info.collider = &b1;
 	box2Info.normal = normal * -1.0f;
 	if (b2.callback != nullptr)
 	{
