@@ -1,5 +1,8 @@
 #include "Brick.h"
 
+#include "Game/Game.h"
+#include "Gameplay/Map.h"
+
 #include <SFML/Graphics.hpp>
 
 Brick::Brick(sf::Vector2f position, sf::Vector2f size)
@@ -12,19 +15,22 @@ Brick::Brick(sf::Vector2f position, sf::Vector2f size)
 
 	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
 
-	m_collider.width = m_sprite.getSize().x;
-	m_collider.height = m_sprite.getSize().y;
-	m_collider.left = m_position.x - m_sprite.getOrigin().x;
-	m_collider.top = m_position.y - m_sprite.getOrigin().y;
+	m_collider = &Game::GetMap()->GetPhysics()->CreateCollider();
+	m_collider->rectangle.width = m_sprite.getSize().x;
+	m_collider->rectangle.height = m_sprite.getSize().y;
+	m_collider->rectangle.left = m_position.x - m_sprite.getOrigin().x;
+	m_collider->rectangle.top = m_position.y - m_sprite.getOrigin().y;
 }
 
 Brick::~Brick()
 {
+	Game::GetMap()->GetPhysics()->DestroyCollider(*m_collider);
 }
 
 void Brick::Initialise()
 {
 	Base::Initialise();
+	m_collider->callback = std::bind(&Brick::HandleOnCollision, this, std::placeholders::_1);
 }
 
 void Brick::Destroy()
@@ -32,13 +38,9 @@ void Brick::Destroy()
 	Base::Destroy();
 }
 
-void Brick::Update(sf::RenderWindow* window, float delta)
+void Brick::Update(float delta)
 {
-	Base::Update(window, delta);
-	
-	// static, don't need to update
-	//m_collider.left = m_position.x - m_sprite.getOrigin().x;
-	//m_collider.top = m_position.y - m_sprite.getOrigin().y;
+	Base::Update(delta);
 }
 
 void Brick::Draw(sf::RenderWindow* window)
@@ -49,3 +51,7 @@ void Brick::Draw(sf::RenderWindow* window)
 	window->draw(m_sprite);
 }
 
+void Brick::HandleOnCollision(const HitInfo& hitInfo)
+{
+	Game::GetMap()->DestroyActor(this);
+}

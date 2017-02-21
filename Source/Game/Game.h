@@ -18,12 +18,15 @@ public:
 	virtual void Initialise();
 	virtual void Destroy();
 
-	virtual void Update(sf::RenderWindow* window, float delta);
+	virtual void Update(float delta);
 	virtual void Draw(sf::RenderWindow* window);
+
+public: 
+	static Map* GetMap();
 
 protected:
 
-	Map* m_map;
+	static Map* s_map;
 };
 #endif
-//EOF
+

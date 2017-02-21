@@ -4,8 +4,8 @@
 
 Physics::Physics()
 {
-	m_dynamic.reserve(32);
-	m_static.reserve(32);
+	m_colliders.reserve(64);
+	m_rigidbodies.reserve(32);
 }
 
 Physics::~Physics()
@@ -17,79 +17,95 @@ void Physics::Update()
 	//TODO: spatial partitioning
 
 	// collision handling
-	for (size_t i = 0; i < m_dynamic.size(); ++i)
+	std::vector<Rigidbody*>::iterator rigidbody = m_rigidbodies.begin();
+	std::vector<Rigidbody*>::iterator rigidbodyEnd = m_rigidbodies.end();
+	for (; rigidbody != rigidbodyEnd; ++rigidbody)
 	{
-		if (m_dynamic[i] == nullptr)
-			continue;
-
-		Actor& a = *m_dynamic[i];
-
-		// loop through dynamic
-		for (size_t j = i+1; j < m_dynamic.size(); ++j)
+		if ((*rigidbody) != nullptr)
 		{
-			if (m_dynamic[j] == nullptr)
-				continue;
+			Rigidbody& a = *(*rigidbody);
 
-			Actor& b = *m_dynamic[j];
-			CheckCollision(a, b);
-		}
-
-		// loop through static
-		for (size_t j = 0; j < m_static.size(); ++j)
-		{
-			if (m_static[j] == nullptr)
-				continue;
-
-			Actor& b = *m_static[j];
-			CheckCollision(a, b);
+			// loop through static objects
+			std::vector<Collider*>::iterator collider = m_colliders.begin();
+			std::vector<Collider*>::iterator colliderEnd = m_colliders.end();
+			for (; collider != colliderEnd; ++collider)
+			{
+				if ((*collider) != nullptr && (*collider) != &a.collider)
+				{
+					Collider& b = *(*collider);
+					CheckCollision(a.collider, b);
+				}
+			}
 		}
 	}
 }
 
-void Physics::CheckCollision(Actor& a, Actor& b)
+void Physics::CheckCollision(Collider& a, Collider& b)
 {
-	if (Actor::IsIntersecting(a, b) == true)
+	if (Collider::IsIntersecting(a, b) == true)
 	{
 		sf::Vector2f point;
 		sf::Vector2f normal;
 
-		HitInfo aInfo(point, normal, b);
-		a.HandleOnCollision(aInfo);
+		HitInfo aInfo(&b);
+		aInfo.normal = normal;
+		aInfo.point = point;
+		if (a.callback != nullptr)
+		{
+			a.callback(aInfo);
+		}
 
-		HitInfo bInfo(point, normal, a);
-		b.HandleOnCollision(bInfo);
+		HitInfo bInfo(&a);
+		bInfo.normal = normal * -1.0f;
+		bInfo.point = point;
+		if (b.callback != nullptr)
+		{
+			b.callback(bInfo);
+		}
 	}
 }
 
-void Physics::RegisterDynamic(Actor* actor)
+Collider& Physics::CreateCollider()
 {
-	m_dynamic.push_back(actor);
+	Collider* collider = new Collider();
+	m_colliders.push_back(collider);
+	return *collider;
 }
 
-void Physics::UnregisterDynamic(const Actor* actor)
+void Physics::DestroyCollider(Collider& collider)
 {
-	for (size_t i = 0; i < m_dynamic.size(); ++i)
+	std::vector<Collider*>::iterator itr = m_colliders.begin();
+	std::vector<Collider*>::iterator end = m_colliders.end();
+	for (; itr != end; ++itr)
 	{
-		if (m_dynamic[i] == actor)
+		Collider* value = *itr;
+		if (value != nullptr && value == &collider)
 		{
-			m_dynamic.erase(m_dynamic.begin() + i);
+			m_colliders.erase(itr);
+			delete value;
 			return;
 		}
 	}
 }
 
-void Physics::RegisterStatic(Actor* actor)
+Rigidbody& Physics::CreateRigidbody(Collider& collider)
 {
-	m_static.push_back(actor);
+	Rigidbody* rigidbody = new Rigidbody(collider);
+	m_rigidbodies.push_back(rigidbody);
+	return *rigidbody;
 }
 
-void Physics::UnregisterStatic(const Actor* actor)
+void Physics::DestroyRigidbody(Rigidbody& rigidbody)
 {
-	for (size_t i = 0; i < m_static.size(); ++i)
+	std::vector<Rigidbody*>::iterator itr = m_rigidbodies.begin();
+	std::vector<Rigidbody*>::iterator end = m_rigidbodies.end();
+	for (; itr != end; ++itr)
 	{
-		if (m_static[i] == actor)
+		Rigidbody* value = *itr;
+		if (value != nullptr && value == &rigidbody)
 		{
-			m_static.erase(m_static.begin() + i);
+			m_rigidbodies.erase(itr);
+			delete value;
 			return;
 		}
 	}

@@ -3,7 +3,7 @@
 
 #include "Game/Actor.h"
 
-#include <SFML/Graphics/RectangleShape.hpp>
+struct Collider;
 
 class Wall : public Actor
 {
@@ -17,13 +17,8 @@ public:
 	virtual void Initialise() override;
 	virtual void Destroy() override;
 
-	virtual void Update(sf::RenderWindow* window, float delta) override;
-	virtual void Draw(sf::RenderWindow* window) override;
-
-	virtual void HandleOnCollision(const HitInfo& hitInfo) override;
-
 public:
-
+	Collider* m_collider = nullptr;
 };
 #endif
-//EOF
+

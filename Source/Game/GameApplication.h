@@ -31,4 +31,4 @@ protected:
 	Game* m_game;
 };
 #endif
-//EOF
+

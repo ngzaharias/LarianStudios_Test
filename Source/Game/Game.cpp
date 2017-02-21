@@ -2,35 +2,42 @@
 
 #include "Gameplay/Map.h"
 
+Map* Game::s_map;
+
 Game::Game()
 {
+	s_map = new Map();
 }
 
 Game::~Game()
 {
+	delete s_map;
+	s_map = nullptr;
 }
 
 void Game::Initialise()
 {
-	m_map = new Map();
-	m_map->Load();
+	s_map->Load();
 }
 
 void Game::Destroy()
 {
-	m_map->Unload();
-	delete m_map;
+	s_map->Unload();
 }
 
-void Game::Update(sf::RenderWindow* window, float delta)
+void Game::Update(float delta)
 {
-	m_map->Update(window, delta);
+	s_map->Update(delta);
 }
 
 void Game::Draw(sf::RenderWindow* window)
 {
-	m_map->Draw(window);
+	s_map->Draw(window);
+}
+
+Map* Game::GetMap()
+{
+	return s_map;
 }
 
 
-//EOF

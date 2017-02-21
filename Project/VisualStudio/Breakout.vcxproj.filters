@@ -63,6 +63,9 @@
     <ClCompile Include="..\..\Source\Gameplay\Wall.cpp">
       <Filter>Source Files\Gameplay</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Engine\Screen.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Application.h">
@@ -103,6 +106,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Utility\Random.h">
       <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\VectorHelper.h">
+      <Filter>Source Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Engine\Screen.h">
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

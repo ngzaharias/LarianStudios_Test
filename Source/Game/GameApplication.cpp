@@ -2,6 +2,7 @@
 
 #include "Game.h"
 #include "Engine/Physics.h"
+#include "Engine/Screen.h"
 
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
@@ -11,15 +12,21 @@
 GameApplication::GameApplication()
 {
 	m_clock = new sf::Clock();
-	m_window = new sf::RenderWindow(sf::VideoMode(800, 600), "Breakout: Nicholas Zaharias");
+
+	sf::VideoMode videoMode = sf::VideoMode(Screen::width, Screen::height);
+	m_window = new sf::RenderWindow(videoMode, "Breakout: Nicholas Zaharias");
+	Screen::SetWindow(m_window);
 
 	m_game = new Game();
 }
 
 GameApplication::~GameApplication()
 {
+	delete m_clock;
 	delete m_game;
 	delete m_window;
+
+	Screen::SetWindow(nullptr);
 }
 
 bool GameApplication::Initialise(int agrc, char* argv[])
@@ -36,7 +43,7 @@ void GameApplication::Destroy()
 bool GameApplication::Update()
 {
 	sf::Time delta = m_clock->restart();
-	m_game->Update(m_window, delta.asSeconds());
+	m_game->Update(delta.asSeconds());
 	return true;
 }
 

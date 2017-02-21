@@ -8,17 +8,37 @@
 #include <vector> 
 
 class Actor;
+struct Collider;
 
 struct HitInfo
 {
 	sf::Vector2f point;
 	sf::Vector2f normal;
-	Actor& actor;
+	Collider* collider;
 
-	HitInfo(sf::Vector2f point, sf::Vector2f normal, Actor& actor)
-		: point(point)
-		, normal(normal)
-		, actor(actor)
+	HitInfo(Collider* collider)
+		: collider(collider)
+	{ }
+};
+
+struct Collider
+{
+	sf::FloatRect rectangle;
+	std::function<void(HitInfo&)> callback;
+
+	static bool IsIntersecting(const Collider& a, const Collider& b)
+	{
+		return a.rectangle.intersects(b.rectangle);
+	}
+};
+
+struct Rigidbody
+{
+	sf::Vector2f velocity;
+	Collider& collider;
+
+	Rigidbody(Collider& collider)
+		: collider(collider)
 	{ }
 };
 
@@ -31,18 +51,17 @@ public:
 public:
 	void Update();
 
-	void CheckCollision(Actor& a, Actor& b);
+	void CheckCollision(Collider& a, Collider& b);
 
-	void RegisterDynamic(Actor* actor);
-	void UnregisterDynamic(const Actor* actor);
+	Collider& CreateCollider();
+	void DestroyCollider(Collider& collider);
 
-	void RegisterStatic(Actor* actor);
-	void UnregisterStatic(const Actor* actor);
+	Rigidbody& CreateRigidbody(Collider& collider);
+	void DestroyRigidbody(Rigidbody& collider);
 
 private:
-	std::vector<Actor*> m_dynamic;
-	std::vector<Actor*> m_static;
+	std::vector<Collider*> m_colliders;
+	std::vector<Rigidbody*> m_rigidbodies;
 
 };
 #endif
-//EOF

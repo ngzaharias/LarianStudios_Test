@@ -9,9 +9,6 @@ namespace sf
 }
 
 class Actor;
-class Ball;
-class Brick;
-class Paddle;
 class Physics;
 
 class Map
@@ -24,13 +21,20 @@ public:
 	void Load();
 	void Unload();
 
-	void Update(sf::RenderWindow* window, float delta);
+	void Update(float delta);
 	void Draw(sf::RenderWindow* window);
+
+	void DestroyActor(Actor* actor);
+
+	Physics* GetPhysics();
+
+private:
+	void CleanupActors();
 
 protected:
 	Physics* m_physics;
 	std::vector<Actor*> m_actors;
+	std::vector<Actor*> m_actorsToDestroy;
 
 };
 #endif
-//EOF

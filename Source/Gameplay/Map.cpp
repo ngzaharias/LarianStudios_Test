@@ -23,6 +23,7 @@ void Map::Load()
 	//TODO: 
 	// - settings
 	// - load from file
+	// - actor factory?
 
 	//walls
 	{
@@ -30,10 +31,6 @@ void Map::Load()
 		Wall* wallBottom = new Wall(sf::Vector2f(400.0f, 700.0f), sf::Vector2f(800.0f, 200.0f));
 		Wall* wallLeft = new Wall(sf::Vector2f(-100.0f, 300.0f), sf::Vector2f(200.0f, 600.0f));
 		Wall* wallRight = new Wall(sf::Vector2f(900.0f, 300.0f), sf::Vector2f(200.0f, 600.0f));
-		m_physics->RegisterStatic(wallTop);
-		m_physics->RegisterStatic(wallBottom);
-		m_physics->RegisterStatic(wallLeft);
-		m_physics->RegisterStatic(wallRight);
 		m_actors.push_back(wallTop);
 		m_actors.push_back(wallBottom);
 		m_actors.push_back(wallLeft);
@@ -49,7 +46,6 @@ void Map::Load()
 			sf::Vector2f position = sf::Vector2f(x * 100.0f, y * 50.0f);
 			Brick* brick = new Brick(position, brickSize);
 			brick->Initialise();
-			m_physics->RegisterStatic(brick);
 			m_actors.push_back(brick);
 		}
 	}
@@ -57,7 +53,6 @@ void Map::Load()
 	{
 		Paddle* paddle = new Paddle();
 		paddle->Initialise();
-		m_physics->RegisterDynamic(paddle);
 		m_actors.push_back(paddle);
 	}
 
@@ -66,35 +61,85 @@ void Map::Load()
 		//HACK: done last to ensure it renders on top
 		Ball* ball = new Ball();
 		ball->Initialise();
-		m_physics->RegisterDynamic(ball);
 		m_actors.push_back(ball);
 	}
 }
 
 void Map::Unload()
 {
-	for (size_t i = 0; i < m_actors.size(); ++i)
+	std::vector<Actor*>::iterator itr = m_actors.begin();
+	std::vector<Actor*>::iterator end = m_actors.end();
+	for (; itr != end; ++itr)
 	{
-		m_actors[i]->Destroy();
-		delete m_actors[i];
+		Actor* actor = (*itr);
+		if (actor != nullptr)
+		{
+			actor->Destroy();
+			delete actor;
+		}
 	}
 }
 
-void Map::Update(sf::RenderWindow* window, float delta)
+void Map::Update(float delta)
 {
+	//TODO: fixed update
+	// physics first
 	m_physics->Update();
 
-	// update objects
-	for (size_t i = 0; i < m_actors.size(); ++i)
+	std::vector<Actor*>::iterator itr = m_actors.begin();
+	std::vector<Actor*>::iterator end = m_actors.end();
+	for (; itr != end; ++itr)
 	{
-		m_actors[i]->Update(window, delta);
+		Actor* actor = (*itr);
+		if (actor != nullptr)
+		{
+			actor->Update(delta);
+		}
 	}
+
+	CleanupActors();
 }
 
 void Map::Draw(sf::RenderWindow* window)
 {
-	for (size_t i = 0; i < m_actors.size(); ++i)
+	std::vector<Actor*>::iterator itr = m_actors.begin();
+	std::vector<Actor*>::iterator end = m_actors.end();
+	for (; itr != end; ++itr)
 	{
-		m_actors[i]->Draw(window);
+		Actor* actor = (*itr);
+		if (actor != nullptr)
+		{
+			actor->Draw(window);
+		}
 	}
+}
+
+void Map::DestroyActor(Actor* actor)
+{
+	m_actorsToDestroy.push_back(actor);
+}
+
+Physics* Map::GetPhysics()
+{
+	return m_physics;
+}
+
+void Map::CleanupActors()
+{
+	std::vector<Actor*>::iterator destroy = m_actorsToDestroy.begin();
+	std::vector<Actor*>::iterator destroyEnd = m_actorsToDestroy.end();
+	for (; destroy != destroyEnd; ++destroy)
+	{
+		for (int i = m_actors.size() - 1; i >= 0; --i)
+		{
+			Actor* actor = m_actors[i];
+			if ((*destroy) == actor)
+			{
+				m_actors.erase(m_actors.begin() + i);
+				delete actor;
+				break;
+			}
+		}
+	}
+	m_actorsToDestroy.clear();
 }

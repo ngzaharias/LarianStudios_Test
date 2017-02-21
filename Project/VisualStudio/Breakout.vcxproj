@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\Application.cpp" />
     <ClCompile Include="..\..\Source\Engine\Physics.cpp" />
+    <ClCompile Include="..\..\Source\Engine\Screen.cpp" />
     <ClCompile Include="..\..\Source\Gameplay\Ball.cpp" />
     <ClCompile Include="..\..\Source\Gameplay\Brick.cpp" />
     <ClCompile Include="..\..\Source\Gameplay\Map.cpp" />
@@ -34,6 +35,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\Application.h" />
     <ClInclude Include="..\..\Source\Engine\Physics.h" />
+    <ClInclude Include="..\..\Source\Engine\Screen.h" />
     <ClInclude Include="..\..\Source\Gameplay\Ball.h" />
     <ClInclude Include="..\..\Source\Gameplay\Brick.h" />
     <ClInclude Include="..\..\Source\Gameplay\Map.h" />
@@ -45,6 +47,7 @@
     <ClInclude Include="..\..\Source\Utility\Containers\Grid.h" />
     <ClInclude Include="..\..\Source\Utility\Math.h" />
     <ClInclude Include="..\..\Source\Utility\Random.h" />
+    <ClInclude Include="..\..\Source\Utility\VectorHelper.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2471547F-763A-49BA-9A17-6814171F1849}</ProjectGuid>

@@ -21,4 +21,4 @@ protected:
 	bool m_isForceQuitting = false;
 };
 #endif
-//EOF
+
