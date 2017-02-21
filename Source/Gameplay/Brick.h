@@ -1,12 +1,11 @@
 #ifndef BRICK_H
 #define BRICK_H
 
-#include "Engine/Physics.h"
 #include "Game/Actor.h"
 
-#include <SFML/Graphics/RectangleShape.hpp>
+#include "Engine/Physics.h"
 
-struct Collider;
+#include <SFML/Graphics/RectangleShape.hpp>
 
 class Brick : public Actor
 {
@@ -27,7 +26,7 @@ public:
 
 public:
 	sf::RectangleShape m_sprite = sf::RectangleShape();
-	Collider* m_collider = nullptr;
+	Collider m_collider;
 
 };
 #endif

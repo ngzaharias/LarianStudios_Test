@@ -3,6 +3,7 @@
 #include "Ball.h"
 #include "Brick.h"
 #include "Paddle.h"
+#include "RespawnZone.h"
 #include "Wall.h"
 
 #include <SFML/Graphics.hpp>
@@ -26,16 +27,25 @@ void Map::Load()
 	//walls
 	{
 		Wall* wallTop = new Wall(sf::Vector2f(400.0f, -100.0f), sf::Vector2f(800.0f, 200.0f));
-		Wall* wallBottom = new Wall(sf::Vector2f(400.0f, 700.0f), sf::Vector2f(800.0f, 200.0f));
 		Wall* wallLeft = new Wall(sf::Vector2f(-100.0f, 300.0f), sf::Vector2f(200.0f, 600.0f));
 		Wall* wallRight = new Wall(sf::Vector2f(900.0f, 300.0f), sf::Vector2f(200.0f, 600.0f));
+		wallTop->Initialise();
+		wallLeft->Initialise();
+		wallRight->Initialise();
 		m_actors.push_back(wallTop);
-		m_actors.push_back(wallBottom);
 		m_actors.push_back(wallLeft);
 		m_actors.push_back(wallRight);
 	}
 
+	// respawns
+	{
+		RespawnZone* respawn = new RespawnZone(sf::Vector2f(400.0f, 700.0f), sf::Vector2f(800.0f, 200.0f));
+		respawn->Initialise();
+		m_actors.push_back(respawn);
+	}
+
 	// TODO: Spawn Pool
+	// bricks
 	sf::Vector2f brickSize = sf::Vector2f(90, 40);
 	for (int y = 1; y < 6; ++y)
 	{
@@ -48,12 +58,14 @@ void Map::Load()
 		}
 	}
 
+	// paddles
 	{
 		Paddle* paddle = new Paddle();
 		paddle->Initialise();
 		m_actors.push_back(paddle);
 	}
 
+	// balls
 	{
 		//TODO: Implement render layers
 		//HACK: done last to ensure it renders on top
@@ -111,6 +123,16 @@ void Map::Draw(sf::RenderWindow* window)
 void Map::DestroyActor(Actor* actor)
 {
 	m_actorsToDestroy.push_back(actor);
+}
+
+void Map::UpdateLives(int value)
+{
+	lives += value;
+}
+
+void Map::UpdateScore(int value)
+{
+	score += value;
 }
 
 void Map::CleanupActors()

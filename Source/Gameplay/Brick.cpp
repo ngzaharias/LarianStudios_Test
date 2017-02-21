@@ -15,23 +15,23 @@ Brick::Brick(sf::Vector2f position, sf::Vector2f size)
 
 	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
 
-	m_collider = &Game::GetPhysics()->CreateCollider();
-	m_collider->rectangle.width = m_sprite.getSize().x;
-	m_collider->rectangle.height = m_sprite.getSize().y;
-	m_collider->rectangle.left = m_position.x - m_sprite.getOrigin().x;
-	m_collider->rectangle.top = m_position.y - m_sprite.getOrigin().y;
-	m_collider->actor = this;
+	Game::GetPhysics()->RegisterCollider(m_collider);
+	m_collider.rectangle.width = m_sprite.getSize().x;
+	m_collider.rectangle.height = m_sprite.getSize().y;
+	m_collider.rectangle.left = m_position.x - m_sprite.getOrigin().x;
+	m_collider.rectangle.top = m_position.y - m_sprite.getOrigin().y;
+	m_collider.actor = this;
 }
 
 Brick::~Brick()
 {
-	Game::GetPhysics()->DestroyCollider(*m_collider);
+	Game::GetPhysics()->UnregisterCollider(m_collider);
 }
 
 void Brick::Initialise()
 {
 	Base::Initialise();
-	m_collider->callback = std::bind(&Brick::HandleOnCollision, this, std::placeholders::_1);
+	m_collider.callback = std::bind(&Brick::HandleOnCollision, this, std::placeholders::_1);
 }
 
 void Brick::Destroy()
@@ -54,5 +54,6 @@ void Brick::Draw(sf::RenderWindow* window)
 
 void Brick::HandleOnCollision(const HitInfo& hitInfo)
 {
+	Game::GetMap()->UpdateScore(1);
 	Game::GetMap()->DestroyActor(this);
 }

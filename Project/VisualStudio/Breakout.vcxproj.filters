@@ -75,7 +75,7 @@
     <ClCompile Include="..\..\Source\Utility\VectorHelper.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Gameplay\Respawn.cpp">
+    <ClCompile Include="..\..\Source\Gameplay\RespawnZone.cpp">
       <Filter>Source Files\Gameplay</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,7 +125,7 @@
     <ClInclude Include="..\..\Source\Engine\Screen.h">
       <Filter>Source Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Gameplay\Respawn.h">
+    <ClInclude Include="..\..\Source\Gameplay\RespawnZone.h">
       <Filter>Source Files\Gameplay</Filter>
     </ClInclude>
   </ItemGroup>

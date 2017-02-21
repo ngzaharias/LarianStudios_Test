@@ -21,24 +21,24 @@ Paddle::Paddle()
 
 	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
 
-	m_collider = &Game::GetPhysics()->CreateCollider();
-	m_collider->rectangle.width = m_sprite.getSize().x;
-	m_collider->rectangle.height = m_sprite.getSize().y;
-	m_collider->rectangle.left = m_position.x - m_sprite.getOrigin().x;
-	m_collider->rectangle.top = m_position.y - m_sprite.getOrigin().y;
-	m_collider->actor = this;
+	Game::GetPhysics()->RegisterCollider(m_collider);
+	m_collider.rectangle.width = m_sprite.getSize().x;
+	m_collider.rectangle.height = m_sprite.getSize().y;
+	m_collider.rectangle.left = m_position.x - m_sprite.getOrigin().x;
+	m_collider.rectangle.top = m_position.y - m_sprite.getOrigin().y;
+	m_collider.actor = this;
 }
 
 Paddle::~Paddle()
 {
-	Game::GetPhysics()->DestroyCollider(*m_collider);
+	Game::GetPhysics()->UnregisterCollider(m_collider);
 }
 
 void Paddle::Initialise()
 {
 	Base::Initialise();
 
-	m_collider->callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
+	m_collider.callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
 }
 
 void Paddle::Destroy()
@@ -60,8 +60,8 @@ void Paddle::Update(float delta)
 	m_position.x = Math::Clamp(position.x, 0.0f + halfWidth, Screen::width - halfWidth);
 
 	// sync collider
-	m_collider->rectangle.left = m_position.x - m_sprite.getOrigin().x;
-	m_collider->rectangle.top = m_position.y - m_sprite.getOrigin().y;
+	m_collider.rectangle.left = m_position.x - m_sprite.getOrigin().x;
+	m_collider.rectangle.top = m_position.y - m_sprite.getOrigin().y;
 }
 
 void Paddle::Draw(sf::RenderWindow* window)

@@ -1,12 +1,13 @@
-#include "Wall.h"
+#include "RespawnZone.h"
 
 #include "Engine/Physics.h"
 #include "Game/Game.h"
+#include "Gameplay/Ball.h"
 #include "Gameplay/Map.h"
 
 #include <SFML/Graphics.hpp>
 
-Wall::Wall(const sf::Vector2f& position, const sf::Vector2f& size)
+RespawnZone::RespawnZone(const sf::Vector2f& position, const sf::Vector2f& size)
 {
 	m_position = position;
 
@@ -18,18 +19,28 @@ Wall::Wall(const sf::Vector2f& position, const sf::Vector2f& size)
 	m_collider.actor = this;
 }
 
-Wall::~Wall()
+RespawnZone::~RespawnZone()
 {
 	Game::GetPhysics()->UnregisterCollider(m_collider);
 }
 
-void Wall::Initialise()
+void RespawnZone::Initialise()
 {
 	Base::Initialise();
+
+	m_collider.callback = std::bind(&RespawnZone::HandleOnCollision, this, std::placeholders::_1);
 }
 
-void Wall::Destroy()
+void RespawnZone::Destroy()
 {
 	Base::Destroy();
 }
 
+void RespawnZone::HandleOnCollision(const HitInfo& hitInfo)
+{
+	Ball* ball = dynamic_cast<Ball*>(hitInfo.collider->actor);
+	if (ball != nullptr)
+	{
+		ball->Respawn();
+	}
+}

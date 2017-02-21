@@ -3,7 +3,7 @@
 
 #include "Game/Actor.h"
 
-struct Collider;
+#include "Engine/Physics.h"
 
 class Wall : public Actor
 {
@@ -18,7 +18,7 @@ public:
 	virtual void Destroy() override;
 
 public:
-	Collider* m_collider = nullptr;
+	Collider m_collider;
 };
 #endif
 

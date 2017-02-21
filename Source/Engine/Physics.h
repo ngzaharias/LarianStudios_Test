@@ -13,7 +13,7 @@ struct Collider;
 struct HitInfo
 {
 	sf::Vector2f normal;
-	Collider* collider;
+	Collider* collider = nullptr;
 };
 
 struct Collider
@@ -31,11 +31,7 @@ struct Collider
 struct Rigidbody
 {
 	sf::Vector2f velocity;
-	Collider& collider;
-
-	Rigidbody(Collider& collider)
-		: collider(collider)
-	{ }
+	Collider* collider = nullptr;
 };
 
 class Physics
@@ -50,11 +46,11 @@ public:
 	bool CheckCollision(Rigidbody& a, Collider& b, float delta);
 	void HandleCollision(Rigidbody& a, Collider& b, float delta);
 
-	Collider& CreateCollider();
-	void DestroyCollider(Collider& collider);
+	void RegisterCollider(Collider& collider);
+	void UnregisterCollider(Collider& collider);
 
-	Rigidbody& CreateRigidbody(Collider& collider);
-	void DestroyRigidbody(Rigidbody& collider);
+	void RegisterRigidbody(Rigidbody& rigidbody);
+	void UnregisterRigidbody(Rigidbody& rigidbody);
 
 private:
 	std::vector<Collider*> m_colliders;

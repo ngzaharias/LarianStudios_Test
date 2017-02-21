@@ -23,9 +23,9 @@ void Physics::Update(float delta)
 	std::vector<Rigidbody*>::iterator rigidbodyEnd = m_rigidbodies.end();
 	for (; rigidbody != rigidbodyEnd; ++rigidbody)
 	{
-		if ((*rigidbody) != nullptr)
+		Rigidbody& a = *(*rigidbody);
+		if (a.collider != nullptr)
 		{
-			Rigidbody& a = *(*rigidbody);
 
 			// loop through static objects
 			bool isColliding = false;
@@ -33,7 +33,7 @@ void Physics::Update(float delta)
 			std::vector<Collider*>::iterator colliderEnd = m_colliders.end();
 			for (; collider != colliderEnd; ++collider)
 			{
-				if ((*collider) != nullptr && (*collider) != &a.collider)
+				if ((*collider) != a.collider)
 				{
 					Collider& b = *(*collider);
 					if (CheckCollision(a, b, delta) == true)
@@ -44,8 +44,8 @@ void Physics::Update(float delta)
 				}
 			}
 
-			a.collider.rectangle.left += a.velocity.x * delta;
-			a.collider.rectangle.top += a.velocity.y * delta;
+			a.collider->rectangle.left += a.velocity.x * delta;
+			a.collider->rectangle.top += a.velocity.y * delta;
 			collisionHandled:;
 		}
 	}
@@ -53,8 +53,11 @@ void Physics::Update(float delta)
 
 bool Physics::CheckCollision(Rigidbody& rigidbody, Collider& collider, float delta)
 {
+	if (rigidbody.collider == nullptr)
+		return false;
+
 	//TODO: stepping
-	Collider step = rigidbody.collider;
+	Collider step = *rigidbody.collider;
 	step.rectangle.left += rigidbody.velocity.x * delta;
 	step.rectangle.top += rigidbody.velocity.y * delta;
 
@@ -66,12 +69,12 @@ bool Physics::CheckCollision(Rigidbody& rigidbody, Collider& collider, float del
 
 void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float delta)
 {
-	Collider step = rigidbody.collider;
+	Collider& b1 = *rigidbody.collider;
+	Collider& b2 = collider;
+	Collider step = b1;
 	step.rectangle.left += rigidbody.velocity.x * delta;
 	step.rectangle.top += rigidbody.velocity.y * delta;
 
-	Collider& b1 = rigidbody.collider;
-	Collider& b2 = collider;
 
 	// distance of box 'b2' to face on 'left' side of 'b1'.
 	// distance of box 'b2' to face on 'right' side of 'b1'
@@ -82,19 +85,12 @@ void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float de
 	float top = (step.rectangle.top + step.rectangle.height) - b2.rectangle.top;
 	float bottom = (b2.rectangle.top + b2.rectangle.height) - step.rectangle.top;
 
+	//HACK: not exactly the best way to get a hit normal
 	sf::Vector2f normal;
 	float minX = Math::Min(left, right);
 	float minY = Math::Min(top, bottom);
 	normal.x = (minX < minY) ? (left < right) ? -1.0f : 1.0f : 0.0f;
 	normal.y = (minX < minY) ? 0.0f : (top < bottom) ? -1.0f : 1.0f;
-
-	// TODO: adjust of both axis
-	// adjust b1 by amount of intersection
-	//b1.rectangle.left = step.rectangle.left + (minX * normal.x);
-	//b1.rectangle.top = step.rectangle.top + (minY * normal.y);
-
-	// reflect the velocity
-	rigidbody.velocity = VectorHelper::Reflect(rigidbody.velocity, normal);
 
 	HitInfo box1Info;
 	box1Info.collider = &b2;
@@ -113,47 +109,42 @@ void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float de
 	}
 }
 
-Collider& Physics::CreateCollider()
+
+void Physics::RegisterCollider(Collider& collider)
 {
-	Collider* collider = new Collider();
-	m_colliders.push_back(collider);
-	return *collider;
+	m_colliders.push_back(&collider);
 }
 
-void Physics::DestroyCollider(Collider& collider)
+void Physics::UnregisterCollider(Collider& collider)
 {
 	std::vector<Collider*>::iterator itr = m_colliders.begin();
 	std::vector<Collider*>::iterator end = m_colliders.end();
 	for (; itr != end; ++itr)
 	{
-		Collider* value = *itr;
-		if (value != nullptr && value == &collider)
+		Collider& value = *(*itr);
+		if (&value == &collider)
 		{
 			m_colliders.erase(itr);
-			delete value;
 			return;
 		}
 	}
 }
 
-Rigidbody& Physics::CreateRigidbody(Collider& collider)
+void Physics::RegisterRigidbody(Rigidbody& rigidbody)
 {
-	Rigidbody* rigidbody = new Rigidbody(collider);
-	m_rigidbodies.push_back(rigidbody);
-	return *rigidbody;
+	m_rigidbodies.push_back(&rigidbody);
 }
 
-void Physics::DestroyRigidbody(Rigidbody& rigidbody)
+void Physics::UnregisterRigidbody(Rigidbody& rigidbody)
 {
 	std::vector<Rigidbody*>::iterator itr = m_rigidbodies.begin();
 	std::vector<Rigidbody*>::iterator end = m_rigidbodies.end();
 	for (; itr != end; ++itr)
 	{
-		Rigidbody* value = *itr;
-		if (value != nullptr && value == &rigidbody)
+		Rigidbody& value = *(*itr);
+		if (&value == &rigidbody)
 		{
 			m_rigidbodies.erase(itr);
-			delete value;
 			return;
 		}
 	}
