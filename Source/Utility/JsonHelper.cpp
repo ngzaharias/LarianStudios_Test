@@ -14,6 +14,7 @@ namespace JsonHelper
 		if (file == nullptr)
 		{
 			perror("fopen_s");
+			fclose(file);
 			return false;
 		}
 
@@ -23,9 +24,11 @@ namespace JsonHelper
 		if (result == false)
 		{
 			printf("JSON parse error: %s (%u)\n", rapidjson::GetParseError_En(result.Code()), (unsigned int)result.Offset());
+			fclose(file);
 			return false;
 		}
 
+		fclose(file);
 		return true;
 	}
 
