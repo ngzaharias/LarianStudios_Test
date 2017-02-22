@@ -10,10 +10,12 @@
 class Actor;
 struct Collider;
 
+// ColliderA will always be the owner of the callback
 struct HitInfo
 {
 	sf::Vector2f normal;
-	Collider* collider = nullptr;
+	Collider* colliderA = nullptr;
+	Collider* colliderB = nullptr;
 };
 
 struct Collider
@@ -21,6 +23,7 @@ struct Collider
 	sf::FloatRect rectangle;
 	std::function<void(HitInfo&)> callback = nullptr;
 	Actor* actor = nullptr;
+	bool isTrigger = false;
 
 	static bool IsIntersecting(const Collider& a, const Collider& b)
 	{
@@ -53,6 +56,7 @@ public:
 	void UnregisterRigidbody(Rigidbody& rigidbody);
 
 private:
+	//TODO: triggers
 	std::vector<Collider*> m_colliders;
 	std::vector<Rigidbody*> m_rigidbodies;
 

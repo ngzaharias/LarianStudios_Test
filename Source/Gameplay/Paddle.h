@@ -24,9 +24,17 @@ public:
 
 	void HandleOnCollision(const HitInfo& hitInfo);
 
+private:
+
+	void InitaliseColliders();
+	void SyncColliders();
+
+	void Debug_DrawColliders(sf::RenderWindow* window);
+
 public:
 	sf::RectangleShape m_sprite = sf::RectangleShape();
-	Collider m_collider;
+	Collider m_colliderLeft;
+	Collider m_colliderRight;
 
 };
 #endif

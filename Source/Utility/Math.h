@@ -3,11 +3,20 @@
 
 namespace Math
 {
-	float Clamp(float value, float min, float max);
+	template<typename T> T Clamp(const T& value, const T& min, const T& max)
+	{
+		return value < min ? min : value > max ? max : value;
+	}
 
-	float Min(float a, float b);
+	template<typename T> T Min(const T& a, const T& b)
+	{
+		return (a < b) ? a : b;
+	}
 
-	float Max(float a, float b);
+	template<typename T> T Max(const T& a, const T& b)
+	{
+		return (a > b) ? a : b;
+	}
 
 	float Sign(float value);
 }

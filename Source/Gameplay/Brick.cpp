@@ -1,6 +1,7 @@
 #include "Brick.h"
 
 #include "Game/Game.h"
+#include "Gameplay/Ball.h"
 #include "Gameplay/Map.h"
 
 #include <SFML/Graphics.hpp>
@@ -9,7 +10,7 @@ Brick::Brick(sf::Vector2f position, sf::Vector2f size)
 {
 	m_position = position;
 
-	m_sprite.setFillColor(sf::Color::Red);
+	m_sprite.setFillColor(sf::Color::Green);
 	m_sprite.setPosition(m_position);
 	m_sprite.setSize(size);
 
@@ -54,6 +55,11 @@ void Brick::Draw(sf::RenderWindow* window)
 
 void Brick::HandleOnCollision(const HitInfo& hitInfo)
 {
-	Game::GetMap()->UpdateScore(1);
-	Game::GetMap()->DestroyActor(this);
+	bool isBall = dynamic_cast<Ball*>(hitInfo.colliderB->actor) != nullptr;
+	if (isBall == true)
+	{
+		//TODO: settings
+		Game::GetMap()->UpdateScore(1);
+		Game::GetMap()->DestroyActor(this);
+	}
 }

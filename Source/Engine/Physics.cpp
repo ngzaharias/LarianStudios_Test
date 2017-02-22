@@ -39,14 +39,12 @@ void Physics::Update(float delta)
 					if (CheckCollision(a, b, delta) == true)
 					{
 						HandleCollision(a, b, delta);
-						goto collisionHandled;
 					}
 				}
 			}
 
 			a.collider->rectangle.left += a.velocity.x * delta;
 			a.collider->rectangle.top += a.velocity.y * delta;
-			collisionHandled:;
 		}
 	}
 }
@@ -84,15 +82,23 @@ void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float de
 	float top = (step.rectangle.top + step.rectangle.height) - b2.rectangle.top;
 	float bottom = (b2.rectangle.top + b2.rectangle.height) - step.rectangle.top;
 
+	//TODO: move rigidbody out of the collider
+
 	//HACK: not exactly the best way to get a hit normal
 	sf::Vector2f normal;
-	float minX = Math::Min(left, right);
-	float minY = Math::Min(top, bottom);
+	float minX = Math::Min<float>(left, right);
+	float minY = Math::Min<float>(top, bottom);
 	normal.x = (minX < minY) ? (left < right) ? -1.0f : 1.0f : 0.0f;
 	normal.y = (minX < minY) ? 0.0f : (top < bottom) ? -1.0f : 1.0f;
 
+	if (b2.isTrigger == false)
+	{
+		rigidbody.velocity = VectorHelper::Reflect(rigidbody.velocity, normal);
+	}
+
 	HitInfo box1Info;
-	box1Info.collider = &b2;
+	box1Info.colliderA = &b1;
+	box1Info.colliderB = &b2;
 	box1Info.normal = normal;
 	if (b1.callback != nullptr)
 	{
@@ -100,7 +106,8 @@ void Physics::HandleCollision(Rigidbody& rigidbody, Collider& collider, float de
 	}
 
 	HitInfo box2Info;
-	box2Info.collider = &b1;
+	box2Info.colliderA = &b2;
+	box2Info.colliderB = &b1;
 	box2Info.normal = normal * -1.0f;
 	if (b2.callback != nullptr)
 	{

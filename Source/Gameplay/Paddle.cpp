@@ -13,32 +13,27 @@
 
 Paddle::Paddle()
 {
-	m_position = sf::Vector2f(400.0f, 600.0f);
+	m_position = sf::Vector2f(400.0f, 535.0f);
 
 	m_sprite.setFillColor(sf::Color::White);
 	m_sprite.setPosition(m_position);
-	m_sprite.setSize(sf::Vector2f(250.0f, 30.0f));
+	m_sprite.setSize(sf::Vector2f(250, 30));
 
 	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
 
-	Game::GetPhysics()->RegisterCollider(m_collider);
-	m_collider.rectangle.width = m_sprite.getSize().x;
-	m_collider.rectangle.height = m_sprite.getSize().y;
-	m_collider.rectangle.left = m_position.x - m_sprite.getOrigin().x;
-	m_collider.rectangle.top = m_position.y - m_sprite.getOrigin().y;
-	m_collider.actor = this;
+	// colliders
+	InitaliseColliders();
 }
 
 Paddle::~Paddle()
 {
-	Game::GetPhysics()->UnregisterCollider(m_collider);
+	Game::GetPhysics()->UnregisterCollider(m_colliderLeft);
+	Game::GetPhysics()->UnregisterCollider(m_colliderRight);
 }
 
 void Paddle::Initialise()
 {
 	Base::Initialise();
-
-	m_collider.callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
 }
 
 void Paddle::Destroy()
@@ -52,16 +47,14 @@ void Paddle::Update(float delta)
 
 	//TODO: limit paddle speed?
 
-	sf::RenderWindow* window = Screen::GetWindow();
-	sf::Vector2i mousePosition = sf::Mouse::getPosition(*window);
-	sf::Vector2f position = sf::Vector2f(mousePosition);
+	sf::Window* window = Screen::GetWindow();
+	sf::Vector2i screenPosition = sf::Mouse::getPosition(*window);
+	sf::Vector2i position = Screen::AdjustToFullscreenPosition(*window, screenPosition);
 	
-	float halfWidth = m_sprite.getSize().x / 2;
-	m_position.x = Math::Clamp(position.x, 0.0f + halfWidth, Screen::width - halfWidth);
+	m_position.x = (float)Math::Clamp<int>(position.x, 0, (int)Screen::width);
 
 	// sync collider
-	m_collider.rectangle.left = m_position.x - m_sprite.getOrigin().x;
-	m_collider.rectangle.top = m_position.y - m_sprite.getOrigin().y;
+	SyncColliders();
 }
 
 void Paddle::Draw(sf::RenderWindow* window)
@@ -71,30 +64,69 @@ void Paddle::Draw(sf::RenderWindow* window)
 	// sync sprite
 	m_sprite.setPosition(GetPosition());
 	window->draw(m_sprite);
+
+	Debug_DrawColliders(window);
 }
 
 void Paddle::HandleOnCollision(const HitInfo& hitInfo)
 {
-	//Ball* ball = dynamic_cast<Ball*>(hitInfo.collider->actor);
-	//if (ball != nullptr)
-	//{
-	//	// curve the ball
-	//	sf::Vector2f direction = ball->GetPosition() - GetPosition();
-	//	sf::Vector2f normal = VectorHelper::Normalize(direction);
+	Ball* ball = dynamic_cast<Ball*>(hitInfo.colliderB->actor);
+	if (ball != nullptr)
+	{
+		bool isLeft = hitInfo.colliderA == &m_colliderLeft;
 
-	//	float dot = VectorHelper::Dot(normal, sf::Vector2f(0, -1));
-	//	float distance = VectorHelper::Magnitude(direction);
+		sf::Vector2f direction = sf::Vector2f(0.0f, -1.0f);
+		direction.x += (isLeft) ? -1.0f : 1.0f;
+		direction = VectorHelper::Normalize(direction);
 
-	//	//TODO: change to rotation
-	//	if (dot >= 0.5f)
-	//	{
-	//		ball->Curve(sf::Vector2f(0, -1) * weight);
-	//	}
-	//	else
-	//	{
-	//		float sign = Math::Sign(direction.x);
-	//		float weight = Math::Max(0.0f, m_sprite.getSize().x - distance);
-	//		ball->Curve(sf::Vector2f(sign, 0) * weight);
-	//	}
-	//}
+		ball->SetDirection(direction);
+	}
+}
+
+void Paddle::InitaliseColliders()
+{
+	Game::GetPhysics()->RegisterCollider(m_colliderLeft);
+	Game::GetPhysics()->RegisterCollider(m_colliderRight);
+
+	float colliderWidth = m_sprite.getSize().x / 2;
+	m_colliderLeft.rectangle.width = colliderWidth;
+	m_colliderLeft.rectangle.height = m_sprite.getSize().y;
+	m_colliderLeft.actor = this;
+	m_colliderLeft.callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
+
+	m_colliderRight.rectangle.width = colliderWidth;
+	m_colliderRight.rectangle.height = m_sprite.getSize().y;
+	m_colliderRight.actor = this;
+	m_colliderRight.callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
+
+	SyncColliders();
+}
+
+void Paddle::SyncColliders()
+{
+	float colliderWidth = m_sprite.getSize().x / 2;
+	m_colliderLeft.rectangle.left = m_position.x - m_sprite.getOrigin().x + (colliderWidth * 0);
+	m_colliderLeft.rectangle.top = m_position.y - m_sprite.getOrigin().y;
+
+	m_colliderRight.rectangle.left = m_position.x - m_sprite.getOrigin().x + (colliderWidth * 1);
+	m_colliderRight.rectangle.top = m_position.y - m_sprite.getOrigin().y;
+}
+
+void Paddle::Debug_DrawColliders(sf::RenderWindow* window)
+{
+	float colliderWidth = m_sprite.getSize().x / 2;
+	sf::RectangleShape left = sf::RectangleShape();
+	sf::RectangleShape right = sf::RectangleShape();
+
+	left.setSize(sf::Vector2f(colliderWidth, m_sprite.getSize().y));
+	right.setSize(sf::Vector2f(colliderWidth, m_sprite.getSize().y));
+
+	left.setPosition(sf::Vector2f(m_colliderLeft.rectangle.left, m_colliderLeft.rectangle.top));
+	right.setPosition(sf::Vector2f(m_colliderRight.rectangle.left, m_colliderRight.rectangle.top));
+
+	left.setFillColor(sf::Color::Blue);
+	right.setFillColor(sf::Color::Blue);
+
+	window->draw(left);
+	window->draw(right);
 }

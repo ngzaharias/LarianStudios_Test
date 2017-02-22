@@ -17,6 +17,7 @@ namespace VectorHelper
 
 	sf::Vector2f Normalize(const sf::Vector2f& value)
 	{
+		//TODO: handle (0,0) vector?
 		float magnitude = Magnitude(value);
 		return value / magnitude;
 	}

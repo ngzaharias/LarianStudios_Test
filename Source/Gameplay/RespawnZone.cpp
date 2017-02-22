@@ -16,6 +16,7 @@ RespawnZone::RespawnZone(const sf::Vector2f& position, const sf::Vector2f& size)
 	m_collider.rectangle.height = size.y;
 	m_collider.rectangle.left = m_position.x - size.x / 2;
 	m_collider.rectangle.top = m_position.y - size.y / 2;
+	m_collider.isTrigger = true;
 	m_collider.actor = this;
 }
 
@@ -38,9 +39,10 @@ void RespawnZone::Destroy()
 
 void RespawnZone::HandleOnCollision(const HitInfo& hitInfo)
 {
-	Ball* ball = dynamic_cast<Ball*>(hitInfo.collider->actor);
+	Ball* ball = dynamic_cast<Ball*>(hitInfo.colliderB->actor);
 	if (ball != nullptr)
 	{
+		Game::GetMap()->UpdateLives(-1);
 		ball->Respawn();
 	}
 }

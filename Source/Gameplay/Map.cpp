@@ -1,10 +1,13 @@
 #include "Map.h"
 
+
 #include "Ball.h"
 #include "Brick.h"
 #include "Paddle.h"
 #include "RespawnZone.h"
 #include "Wall.h"
+
+#include "Engine/Screen.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -39,7 +42,7 @@ void Map::Load()
 
 	// respawns
 	{
-		RespawnZone* respawn = new RespawnZone(sf::Vector2f(400.0f, 700.0f), sf::Vector2f(800.0f, 200.0f));
+		RespawnZone* respawn = new RespawnZone(sf::Vector2f(400.0f, 650.0f), sf::Vector2f(800.0f, 200.0f));
 		respawn->Initialise();
 		m_actors.push_back(respawn);
 	}
@@ -73,6 +76,22 @@ void Map::Load()
 		ball->Initialise();
 		m_actors.push_back(ball);
 	}
+
+
+	m_font.loadFromFile("Assets/Fonts/kenpixel_square.ttf");
+
+	m_lives = 3;
+	m_livesText.setFont(m_font);
+	m_livesText.setStyle(sf::Text::Bold);
+	m_livesText.setPosition(40.0f, Screen::height - 40.0f);
+
+	m_score = 0;
+	m_scoreText.setFont(m_font);
+	m_scoreText.setStyle(sf::Text::Bold);
+	m_scoreText.setPosition(Screen::width - 60.0f, Screen::height - 40.0f);
+
+	UpdateLives(0);
+	UpdateScore(0);
 }
 
 void Map::Unload()
@@ -118,6 +137,9 @@ void Map::Draw(sf::RenderWindow* window)
 			actor->Draw(window);
 		}
 	}
+
+	window->draw(m_livesText);
+	window->draw(m_scoreText);
 }
 
 void Map::DestroyActor(Actor* actor)
@@ -127,12 +149,22 @@ void Map::DestroyActor(Actor* actor)
 
 void Map::UpdateLives(int value)
 {
-	lives += value;
+	m_lives += value;
+
+	char buffer[10];
+	_itoa_s(m_lives, buffer, 10);
+	sf::String text(buffer);
+	m_livesText.setString(text);
 }
 
 void Map::UpdateScore(int value)
 {
-	score += value;
+	m_score += value;
+
+	char buffer[10];
+	_itoa_s(m_score, buffer, 10);
+	sf::String text(buffer);
+	m_scoreText.setString(text);
 }
 
 void Map::CleanupActors()
@@ -141,7 +173,7 @@ void Map::CleanupActors()
 	std::vector<Actor*>::iterator destroyEnd = m_actorsToDestroy.end();
 	for (; destroy != destroyEnd; ++destroy)
 	{
-		for (int i = m_actors.size() - 1; i >= 0; --i)
+		for (size_t i = m_actors.size() - 1; i >= 0; --i)
 		{
 			Actor* actor = m_actors[i];
 			if ((*destroy) == actor)

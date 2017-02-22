@@ -15,7 +15,7 @@
 Ball::Ball()
 {
 	//TODO: settings file/struct
-	m_sprite.setFillColor(sf::Color::Green);
+	m_sprite.setFillColor(sf::Color::Blue);
 	m_sprite.setSize(sf::Vector2f(20.0f, 20.0f));
 
 	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
@@ -70,12 +70,19 @@ sf::Vector2f Ball::GetPosition() const
 	return sf::Vector2f(x, y);
 }
 
+void Ball::SetDirection(sf::Vector2f direction)
+{
+	float magnitude = VectorHelper::Magnitude(m_rigidbody.velocity);
+	m_rigidbody.velocity = direction * magnitude;
+}
+
 void Ball::Respawn()
 {
 	//TODO: settings file/class
-	float x = Random::Range(-500.0f, 500.0f);
-	float y = Random::Range(-500.0f, 0.0f);
-	m_rigidbody.velocity = sf::Vector2f(x, y);
+	sf::Vector2f direction = sf::Vector2f(Random::Range(-0.5f, 0.5f), Random::Range(-1.0f, 0.1f));
+	direction = VectorHelper::Normalize(direction);
+
+	m_rigidbody.velocity = direction * 500.0f;
 
 	m_collider.rectangle.left = 400.0f - m_sprite.getOrigin().x;
 	m_collider.rectangle.top = 400.0f - m_sprite.getOrigin().y;
@@ -83,27 +90,15 @@ void Ball::Respawn()
 
 void Ball::HandleOnCollision(const HitInfo& hitInfo)
 {
-	bool isPaddle = dynamic_cast<Paddle*>(hitInfo.collider->actor) != nullptr;
-	bool isRespawnZone = dynamic_cast<RespawnZone*>(hitInfo.collider->actor) != nullptr;
-	bool isWall = dynamic_cast<Wall*>(hitInfo.collider->actor) != nullptr;
-	if (isPaddle == true || isWall == true)
+	bool isPaddle = dynamic_cast<Paddle*>(hitInfo.colliderB->actor) != nullptr;
+	if (isPaddle == true)
 	{
-		m_rigidbody.velocity = VectorHelper::Reflect(m_rigidbody.velocity, hitInfo.normal);
-
-		if (isPaddle == true)
-		{
-			//TODO: settings file/class
-			// speed up the ball to a max
-			float magnitude = VectorHelper::Magnitude(m_rigidbody.velocity);
-			sf::Vector2f normal = m_rigidbody.velocity / magnitude;
-			magnitude = Math::Min(magnitude + 500.0f, 5000.0f);
-			m_rigidbody.velocity = normal * magnitude;
-		}
-	}
-	else if (isRespawnZone == true)
-	{
-		Respawn();
-		Game::GetMap()->UpdateLives(-1);
+		//TODO: settings file/class
+		// speed up the ball to a max
+		float magnitude = VectorHelper::Magnitude(m_rigidbody.velocity);
+		sf::Vector2f normal = m_rigidbody.velocity / magnitude;
+		magnitude = Math::Min<float>(magnitude + 100.0f, 1500.0f);
+		m_rigidbody.velocity = normal * magnitude;
 	}
 }
 

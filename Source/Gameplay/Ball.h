@@ -26,6 +26,7 @@ public:
 
 	virtual sf::Vector2f GetPosition() const override;
 
+	void SetDirection(sf::Vector2f direction);
 	void Respawn();
 
 	void HandleOnCollision(const HitInfo& hitInfo);

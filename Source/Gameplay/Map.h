@@ -1,6 +1,8 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include <SFML/Graphics/Text.hpp>
+
 #include <vector>
 
 namespace sf
@@ -32,8 +34,12 @@ private:
 	void CleanupActors();
 
 protected:
-	int lives = 0;
-	int score = 0;
+	int m_lives = 0;
+	int m_score = 0;
+
+	sf::Font m_font;
+	sf::Text m_livesText;
+	sf::Text m_scoreText;
 
 	std::vector<Actor*> m_actors;
 	std::vector<Actor*> m_actorsToDestroy;
