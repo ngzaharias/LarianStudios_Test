@@ -22,14 +22,24 @@ public:
 	virtual void Update(float delta);
 	virtual void Draw(sf::RenderWindow* window);
 
+	void Pause();
+	void Unpause();
+
+	Map& GetMap() const;
+	Physics& GetPhysics() const;
+
 public: 
-	static Map* GetMap();
-	static Physics* GetPhysics();
+	static Game& Instance();
 
 protected:
+	Map* m_map;
+	Physics* m_physics;
 
-	static Map* s_map;
-	static Physics* s_physics;
+	bool m_isPaused = false;
+
+protected:
+	static Game* s_instance;
+
 };
 #endif
 

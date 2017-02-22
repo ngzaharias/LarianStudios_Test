@@ -1,8 +1,8 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-#include "Game/Actor.h"
 #include "Engine/Physics.h"
+#include "Game/Actor.h"
 #include "Settings/PaddleSettings.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>

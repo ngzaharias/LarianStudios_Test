@@ -22,19 +22,19 @@ Ball::Ball(const BallSettings& settings)
 
 	m_sprite.setOrigin(m_settings.size / 2.0f);
 
-	Game::GetPhysics()->RegisterCollider(m_collider);
+	Game::Instance().GetPhysics().RegisterCollider(m_collider);
 	m_collider.rectangle.width = m_settings.size.x;
 	m_collider.rectangle.height = m_settings.size.y;
 	m_collider.actor = this;
 
-	 Game::GetPhysics()->RegisterRigidbody(m_rigidbody);
+	 Game::Instance().GetPhysics().RegisterRigidbody(m_rigidbody);
 	 m_rigidbody.collider = &m_collider;
 }
 
 Ball::~Ball()
 {
-	Game::GetPhysics()->UnregisterCollider(m_collider);
-	Game::GetPhysics()->UnregisterRigidbody(m_rigidbody);
+	Game::Instance().GetPhysics().UnregisterCollider(m_collider);
+	Game::Instance().GetPhysics().UnregisterRigidbody(m_rigidbody);
 }
 
 void Ball::Initialise()

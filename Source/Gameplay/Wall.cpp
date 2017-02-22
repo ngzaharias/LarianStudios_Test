@@ -10,7 +10,7 @@ Wall::Wall(const sf::Vector2f& position, const sf::Vector2f& size)
 {
 	m_position = position;
 
-	Game::GetPhysics()->RegisterCollider(m_collider);
+	Game::Instance().GetPhysics().RegisterCollider(m_collider);
 	m_collider.rectangle.width = size.x;
 	m_collider.rectangle.height = size.y;
 	m_collider.rectangle.left = m_position.x - size.x / 2;
@@ -20,7 +20,7 @@ Wall::Wall(const sf::Vector2f& position, const sf::Vector2f& size)
 
 Wall::~Wall()
 {
-	Game::GetPhysics()->UnregisterCollider(m_collider);
+	Game::Instance().GetPhysics().UnregisterCollider(m_collider);
 }
 
 void Wall::Initialise()

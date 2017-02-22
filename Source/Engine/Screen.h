@@ -24,5 +24,4 @@ private:
 	static sf::RenderWindow* s_window;
 
 };
-
 #endif

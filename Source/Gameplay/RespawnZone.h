@@ -1,9 +1,8 @@
 #ifndef RESPAWN_H
 #define RESPAWN_H
 
-#include "Game/Actor.h"
-
 #include "Engine/Physics.h"
+#include "Game/Actor.h"
 
 struct Collider;
 

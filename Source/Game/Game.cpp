@@ -3,54 +3,73 @@
 #include "Engine/Physics.h"
 #include "Gameplay/Map.h"
 
-Map* Game::s_map = nullptr;
-Physics* Game::s_physics = nullptr;
+Game* Game::s_instance = nullptr;
 
 Game::Game()
 {
-	s_map = new Map();
-	s_physics = new Physics();
+	s_instance = this;
+	m_map = new Map();
+	m_physics = new Physics();
 }
 
 Game::~Game()
 {
-	delete s_map;
-	delete s_physics;
+	delete m_map;
+	delete m_physics;
 
-	s_map = nullptr;
-	s_physics = nullptr;
+	s_instance = nullptr;
 }
 
 void Game::Initialise()
 {
-	s_map->Load();
+	m_map->Initialise();
 }
 
 void Game::Destroy()
 {
-	s_map->Unload();
+	m_map->Destroy();
 }
 
 void Game::Update(float delta)
 {
-	//TODO: fixed update
-	s_physics->Update(delta);
+	if (m_isPaused == true)
+	{
+		delta = 0.0f;
+	}
 
-	s_map->Update(delta);
+	//TODO: fixed update
+	m_physics->Update(delta);
+
+	m_map->Update(delta);
 }
 
 void Game::Draw(sf::RenderWindow* window)
 {
-	s_map->Draw(window);
+	m_map->Draw(window);
 }
 
-Map* Game::GetMap()
+void Game::Pause()
 {
-	return s_map;
+	m_isPaused = true;
 }
 
-Physics* Game::GetPhysics()
+void Game::Unpause()
 {
-	return s_physics;
+	m_isPaused = false;
+}
+
+Map& Game::GetMap() const
+{
+	return *m_map;
+}
+
+Physics& Game::GetPhysics() const
+{
+	return *m_physics;
+}
+
+Game& Game::Instance()
+{
+	return *s_instance;
 }
 

@@ -20,5 +20,4 @@ namespace Math
 
 	float Sign(float value);
 }
-
 #endif

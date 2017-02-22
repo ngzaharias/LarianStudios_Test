@@ -16,7 +16,7 @@ Brick::Brick(const BrickSettings& settings)
 
 	m_sprite.setOrigin(settings.size / 2.0f);
 
-	Game::GetPhysics()->RegisterCollider(m_collider);
+	Game::Instance().GetPhysics().RegisterCollider(m_collider);
 	m_collider.rectangle.width = settings.size.x;
 	m_collider.rectangle.height = settings.size.y;
 	m_collider.rectangle.left = settings.position.x - m_sprite.getOrigin().x;
@@ -26,7 +26,7 @@ Brick::Brick(const BrickSettings& settings)
 
 Brick::~Brick()
 {
-	Game::GetPhysics()->UnregisterCollider(m_collider);
+	Game::Instance().GetPhysics().UnregisterCollider(m_collider);
 }
 
 void Brick::Initialise()
@@ -59,7 +59,7 @@ void Brick::HandleOnCollision(const HitInfo& hitInfo)
 	if (isBall == true)
 	{
 		//TODO: settings
-		Game::GetMap()->UpdateScore(1);
-		Game::GetMap()->DestroyActor(this);
+		Game::Instance().GetMap().UpdateScore(1);
+		Game::Instance().GetMap().DestroyActor(this);
 	}
 }

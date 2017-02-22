@@ -64,9 +64,6 @@
     <ClCompile Include="..\..\Source\Utility\Math.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Utility\Random.cpp">
-      <Filter>Source\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\Utility\VectorHelper.cpp">
       <Filter>Source\Utility</Filter>
     </ClCompile>
@@ -83,6 +80,9 @@
       <Filter>Source\Settings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Settings\PaddleSettings.cpp">
+      <Filter>Source\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Settings\MapSettings.cpp">
       <Filter>Source\Settings</Filter>
     </ClCompile>
   </ItemGroup>
@@ -145,6 +145,9 @@
       <Filter>Source\Settings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Settings\PaddleSettings.h">
+      <Filter>Source\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Settings\MapSettings.h">
       <Filter>Source\Settings</Filter>
     </ClInclude>
   </ItemGroup>

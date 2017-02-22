@@ -13,5 +13,4 @@ namespace JsonHelper
 	int ParseInt(const rapidjson::Value& value, const char* member, int default = 0);
 	const char* ParseString(const rapidjson::Value& value, const char* member, const char* default = "");
 }
-
 #endif

@@ -4,8 +4,6 @@
 #include <rapidjson/error/en.h>
 #include <rapidjson/error/error.h>
 
-#include <iostream>
-
 namespace JsonHelper
 {
 	bool LoadDocument(const char* filepath, rapidjson::Document& document)

@@ -1,6 +1,7 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
+#include <random>
 
 namespace Random
 {
@@ -11,5 +12,4 @@ namespace Random
 		return (r * (max - min)) + min;
 	}
 }
-
 #endif

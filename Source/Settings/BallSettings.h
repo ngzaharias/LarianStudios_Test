@@ -13,5 +13,4 @@ struct BallSettings
 	float velocityMin = 500.0f;
 	float velocityMax = 1500.0f;
 };
-
 #endif

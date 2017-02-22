@@ -1,9 +1,8 @@
 #ifndef BALL_H
 #define BALL_H
 
-#include "Game/Actor.h"
-
 #include "Engine/Physics.h"
+#include "Game/Actor.h"
 #include "Settings/BallSettings.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
@@ -37,6 +36,7 @@ protected:
 	Collider m_collider;
 	Rigidbody m_rigidbody;
 	BallSettings m_settings;
+
 };
 #endif
 

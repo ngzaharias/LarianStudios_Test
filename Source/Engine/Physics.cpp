@@ -49,7 +49,7 @@ void Physics::Update(float delta)
 	}
 }
 
-bool Physics::CheckCollision(Rigidbody& rigidbody, Collider& collider, float delta)
+bool Physics::CheckCollision(const Rigidbody& rigidbody, const Collider& collider, float delta) const
 {
 	if (rigidbody.collider == nullptr)
 		return false;
@@ -121,7 +121,7 @@ void Physics::RegisterCollider(Collider& collider)
 	m_colliders.push_back(&collider);
 }
 
-void Physics::UnregisterCollider(Collider& collider)
+void Physics::UnregisterCollider(const Collider& collider)
 {
 	std::vector<Collider*>::iterator itr = m_colliders.begin();
 	std::vector<Collider*>::iterator end = m_colliders.end();
@@ -141,7 +141,7 @@ void Physics::RegisterRigidbody(Rigidbody& rigidbody)
 	m_rigidbodies.push_back(&rigidbody);
 }
 
-void Physics::UnregisterRigidbody(Rigidbody& rigidbody)
+void Physics::UnregisterRigidbody(const Rigidbody& rigidbody)
 {
 	std::vector<Rigidbody*>::iterator itr = m_rigidbodies.begin();
 	std::vector<Rigidbody*>::iterator end = m_rigidbodies.end();

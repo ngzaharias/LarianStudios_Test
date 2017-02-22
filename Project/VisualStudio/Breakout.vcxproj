@@ -34,10 +34,10 @@
     <ClCompile Include="..\..\Source\Main.cpp" />
     <ClCompile Include="..\..\Source\Settings\BallSettings.cpp" />
     <ClCompile Include="..\..\Source\Settings\BrickSettings.cpp" />
+    <ClCompile Include="..\..\Source\Settings\MapSettings.cpp" />
     <ClCompile Include="..\..\Source\Settings\PaddleSettings.cpp" />
     <ClCompile Include="..\..\Source\Utility\JsonHelper.cpp" />
     <ClCompile Include="..\..\Source\Utility\Math.cpp" />
-    <ClCompile Include="..\..\Source\Utility\Random.cpp" />
     <ClCompile Include="..\..\Source\Utility\VectorHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +55,7 @@
     <ClInclude Include="..\..\Source\Game\GameApplication.h" />
     <ClInclude Include="..\..\Source\Settings\BallSettings.h" />
     <ClInclude Include="..\..\Source\Settings\BrickSettings.h" />
+    <ClInclude Include="..\..\Source\Settings\MapSettings.h" />
     <ClInclude Include="..\..\Source\Settings\PaddleSettings.h" />
     <ClInclude Include="..\..\Source\Utility\Containers\Grid.h" />
     <ClInclude Include="..\..\Source\Utility\JsonHelper.h" />

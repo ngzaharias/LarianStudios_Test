@@ -1,8 +1,8 @@
 #ifndef BRICK_H
 #define BRICK_H
 
-#include "Game/Actor.h"
 #include "Engine/Physics.h"
+#include "Game/Actor.h"
 #include "Settings/BrickSettings.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>

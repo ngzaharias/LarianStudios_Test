@@ -11,7 +11,7 @@ RespawnZone::RespawnZone(const sf::Vector2f& position, const sf::Vector2f& size)
 {
 	m_position = position;
 
-	Game::GetPhysics()->RegisterCollider(m_collider);
+	Game::Instance().GetPhysics().RegisterCollider(m_collider);
 	m_collider.rectangle.width = size.x;
 	m_collider.rectangle.height = size.y;
 	m_collider.rectangle.left = m_position.x - size.x / 2;
@@ -22,7 +22,7 @@ RespawnZone::RespawnZone(const sf::Vector2f& position, const sf::Vector2f& size)
 
 RespawnZone::~RespawnZone()
 {
-	Game::GetPhysics()->UnregisterCollider(m_collider);
+	Game::Instance().GetPhysics().UnregisterCollider(m_collider);
 }
 
 void RespawnZone::Initialise()
@@ -42,7 +42,7 @@ void RespawnZone::HandleOnCollision(const HitInfo& hitInfo)
 	Ball* ball = dynamic_cast<Ball*>(hitInfo.colliderB->actor);
 	if (ball != nullptr)
 	{
-		Game::GetMap()->UpdateLives(-1);
+		Game::Instance().GetMap().UpdateLives(-1);
 		ball->Respawn();
 	}
 }

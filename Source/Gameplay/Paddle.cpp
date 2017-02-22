@@ -19,7 +19,7 @@ Paddle::Paddle(const PaddleSettings& settings)
 	m_sprite.setPosition(m_position);
 	m_sprite.setSize(settings.size);
 
-	Game::GetPhysics()->RegisterCollider(m_collider);
+	Game::Instance().GetPhysics().RegisterCollider(m_collider);
 	m_collider.rectangle.width = settings.size.x;
 	m_collider.rectangle.height = settings.size.y;
 	m_collider.actor = this;
@@ -31,7 +31,7 @@ Paddle::Paddle(const PaddleSettings& settings)
 
 Paddle::~Paddle()
 {
-	Game::GetPhysics()->UnregisterCollider(m_collider);
+	Game::Instance().GetPhysics().UnregisterCollider(m_collider);
 }
 
 void Paddle::Initialise()
@@ -54,7 +54,8 @@ void Paddle::Update(float delta)
 	sf::Vector2i screenPosition = sf::Mouse::getPosition(*window);
 	sf::Vector2i position = Screen::AdjustToFullscreenPosition(*window, screenPosition);
 	
-	m_position.x = (float)Math::Clamp<int>(position.x, 0, (int)Screen::width);
+	float target = (float)Math::Clamp<int>(position.x, 0, (int)Screen::width);
+	m_position.x += (target - m_position.x) * 100.0f * delta;
 
 	// sync collider
 	SyncColliders();
