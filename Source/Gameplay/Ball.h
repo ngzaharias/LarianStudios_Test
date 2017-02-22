@@ -4,6 +4,7 @@
 #include "Game/Actor.h"
 
 #include "Engine/Physics.h"
+#include "Settings/BallSettings.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
@@ -14,7 +15,7 @@ class Ball : public Actor
 	typedef Actor Base;
 
 public:
-	Ball();
+	Ball(const BallSettings& settings);
 	virtual ~Ball();
 
 public:
@@ -26,7 +27,7 @@ public:
 
 	virtual sf::Vector2f GetPosition() const override;
 
-	void SetDirection(sf::Vector2f direction);
+	void InfluenceDirection(sf::Vector2f direction);
 	void Respawn();
 
 	void HandleOnCollision(const HitInfo& hitInfo);
@@ -35,6 +36,7 @@ protected:
 	sf::RectangleShape m_sprite;
 	Collider m_collider;
 	Rigidbody m_rigidbody;
+	BallSettings m_settings;
 };
 #endif
 

@@ -1,13 +1,14 @@
 #include "Map.h"
 
-
 #include "Ball.h"
 #include "Brick.h"
 #include "Paddle.h"
 #include "RespawnZone.h"
 #include "Wall.h"
-
 #include "Engine/Screen.h"
+#include "Utility/JsonHelper.h"
+
+#include <rapidjson/document.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -22,10 +23,7 @@ Map::~Map()
 
 void Map::Load()
 {
-	//TODO: 
-	// - settings
-	// - load from file
-	// - actor factory?
+	//TODO: actor factory?
 
 	//walls
 	{
@@ -47,51 +45,37 @@ void Map::Load()
 		m_actors.push_back(respawn);
 	}
 
-	// TODO: Spawn Pool
-	// bricks
-	sf::Vector2f brickSize = sf::Vector2f(90, 40);
-	for (int y = 1; y < 6; ++y)
+	rapidjson::Document document;
+	if (JsonHelper::LoadDocument("Assets/Settings/Maps/BasicMap.json", document) == true)
 	{
-		for (int x = 1; x < 8; ++x)
+		LoadSettings(document);
+
+		// bricks
+		std::vector<BrickSettings>::iterator brickItr = m_brickSettings.begin();
+		std::vector<BrickSettings>::iterator brickEnd = m_brickSettings.end();
+		for (; brickItr != brickEnd; ++brickItr)
 		{
-			sf::Vector2f position = sf::Vector2f(x * 100.0f, y * 50.0f);
-			Brick* brick = new Brick(position, brickSize);
+			Brick* brick = new Brick(*brickItr);
 			brick->Initialise();
 			m_actors.push_back(brick);
 		}
+
+		// paddles
+		{
+			Paddle* paddle = new Paddle(m_paddleSettings);
+			paddle->Initialise();
+			m_actors.push_back(paddle);
+		}
+
+		// balls
+		{
+			//TODO: Implement render layers
+			//HACK: done last to ensure it renders on top
+			Ball* ball = new Ball(m_ballSettings);
+			ball->Initialise();
+			m_actors.push_back(ball);
+		}
 	}
-
-	// paddles
-	{
-		Paddle* paddle = new Paddle();
-		paddle->Initialise();
-		m_actors.push_back(paddle);
-	}
-
-	// balls
-	{
-		//TODO: Implement render layers
-		//HACK: done last to ensure it renders on top
-		Ball* ball = new Ball();
-		ball->Initialise();
-		m_actors.push_back(ball);
-	}
-
-
-	m_font.loadFromFile("Assets/Fonts/kenpixel_square.ttf");
-
-	m_lives = 3;
-	m_livesText.setFont(m_font);
-	m_livesText.setStyle(sf::Text::Bold);
-	m_livesText.setPosition(40.0f, Screen::height - 40.0f);
-
-	m_score = 0;
-	m_scoreText.setFont(m_font);
-	m_scoreText.setStyle(sf::Text::Bold);
-	m_scoreText.setPosition(Screen::width - 60.0f, Screen::height - 40.0f);
-
-	UpdateLives(0);
-	UpdateScore(0);
 }
 
 void Map::Unload()
@@ -185,4 +169,74 @@ void Map::CleanupActors()
 		}
 	}
 	m_actorsToDestroy.clear();
+}
+
+void Map::LoadSettings(const rapidjson::Document& document)
+{
+	// balls
+	const char* member = "balls";
+	if (document.HasMember(member) == true && document[member].IsString() == true)
+	{
+		rapidjson::Document settings;
+		const char* filepath = document[member].GetString();
+		if (JsonHelper::LoadDocument(filepath, settings) == true)
+		{
+			m_ballSettings.Parse(settings);
+		}
+	}
+
+	// bricks
+	member = "bricks";
+	if (document.HasMember(member) == true && document[member].IsString() == true)
+	{
+		rapidjson::Document settings;
+		const char* filepath = document[member].GetString();
+		if (JsonHelper::LoadDocument(filepath, settings) == true)
+		{
+			if (settings.HasMember(member) == true)
+			{
+				const rapidjson::Value& objectArray = settings[member];
+				if (objectArray.IsArray() == true)
+				{
+					m_brickSettings.clear();
+					for (rapidjson::SizeType i = 0; i < objectArray.Size(); ++i)
+					{
+						BrickSettings brickSetting;
+						brickSetting.Parse(objectArray[i]);
+						m_brickSettings.push_back(brickSetting);
+					}
+				}
+			}
+		}
+	}
+
+	// paddles
+	member = "paddles";
+	if (document.HasMember(member) == true && document[member].IsString() == true)
+	{
+		rapidjson::Document settings;
+		const char* filepath = document[member].GetString();
+		if (JsonHelper::LoadDocument(filepath, settings) == true)
+		{
+			m_paddleSettings.Parse(settings);
+		}
+	}
+
+	// map settings
+	const char* fontpath = JsonHelper::ParseString(document, "font", "Assets/Fonts/kenpixel_square.ttf");
+	m_font.loadFromFile(fontpath);
+
+	m_lives = JsonHelper::ParseInt(document, "lives", 3);
+	m_livesText.setFont(m_font);
+	m_livesText.setStyle(sf::Text::Bold);
+	m_livesText.setPosition(40.0f, Screen::height - 40.0f);
+
+	m_score = JsonHelper::ParseInt(document, "score", 0);
+	m_scoreText.setFont(m_font);
+	m_scoreText.setStyle(sf::Text::Bold);
+	m_scoreText.setPosition(Screen::width - 60.0f, Screen::height - 40.0f);
+
+	//HACK:
+	UpdateLives(0);
+	UpdateScore(0);
 }

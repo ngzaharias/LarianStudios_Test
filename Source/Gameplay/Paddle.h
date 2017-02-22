@@ -2,8 +2,8 @@
 #define PADDLE_H
 
 #include "Game/Actor.h"
-
 #include "Engine/Physics.h"
+#include "Settings/PaddleSettings.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
@@ -12,7 +12,7 @@ class Paddle : public Actor
 	typedef Actor Base;
 
 public:
-	Paddle();
+	Paddle(const PaddleSettings& settings);
 	virtual ~Paddle();
 
 public:
@@ -26,15 +26,13 @@ public:
 
 private:
 
-	void InitaliseColliders();
 	void SyncColliders();
 
 	void Debug_DrawColliders(sf::RenderWindow* window);
 
 public:
 	sf::RectangleShape m_sprite = sf::RectangleShape();
-	Collider m_colliderLeft;
-	Collider m_colliderRight;
+	Collider m_collider;
 
 };
 #endif

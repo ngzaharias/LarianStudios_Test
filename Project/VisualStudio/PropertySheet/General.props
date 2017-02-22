@@ -12,7 +12,7 @@
 xcopy /y /d "$(SolutionDir)..\..\Bin\$(PlatformTarget)\$(Configuration)\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Source\;$(SolutionDir)..\..\Include\$(PlatformTarget)\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Source\;$(SolutionDir)..\..\Include\;$(SolutionDir)..\..\Include\$(PlatformTarget)\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>

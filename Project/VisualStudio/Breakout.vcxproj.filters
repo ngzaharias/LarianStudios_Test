@@ -1,132 +1,151 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
+    <Filter Include="Source">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\Game">
+    <Filter Include="Source\Game">
       <UniqueIdentifier>{1bd0306f-8217-47df-8a06-22a8ccabf05f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Utility">
+    <Filter Include="Source\Utility">
       <UniqueIdentifier>{2fafc77b-4176-4f69-8f51-5bafe15cde62}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Gameplay">
-      <UniqueIdentifier>{a1c62337-e48d-4031-b04b-798d84a0f405}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Utility\Containers">
+    <Filter Include="Source\Utility\Containers">
       <UniqueIdentifier>{16ca3b02-aae6-4b5e-bc17-d088f35a2d33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Engine">
+    <Filter Include="Source\Gameplay">
+      <UniqueIdentifier>{a1c62337-e48d-4031-b04b-798d84a0f405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Engine">
       <UniqueIdentifier>{19fbf46a-bb57-4cde-a184-0078a2912e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Settings">
+      <UniqueIdentifier>{51cc332b-0bff-48a2-88ed-e01c480d60ff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\Main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Game\GameApplication.cpp">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Application.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Game\Game.cpp">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Game\Actor.cpp">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source\Game</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Gameplay\Ball.cpp">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Gameplay\Brick.cpp">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Gameplay\Map.cpp">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Gameplay\Paddle.cpp">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Physics.cpp">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Gameplay\Wall.cpp">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Engine\Screen.cpp">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utility\Math.cpp">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utility\Random.cpp">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Utility\VectorHelper.cpp">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Gameplay\RespawnZone.cpp">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Utility\JsonHelper.cpp">
+      <Filter>Source\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Settings\BallSettings.cpp">
+      <Filter>Source\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Settings\BrickSettings.cpp">
+      <Filter>Source\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Settings\PaddleSettings.cpp">
+      <Filter>Source\Settings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\Application.h">
-      <Filter>Source Files</Filter>
+      <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Game\GameApplication.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Game\Game.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Game\Actor.h">
-      <Filter>Source Files\Game</Filter>
+      <Filter>Source\Game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utility\Containers\Grid.h">
-      <Filter>Source Files\Utility\Containers</Filter>
+      <Filter>Source\Utility\Containers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utility\Math.h">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gameplay\Ball.h">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gameplay\Brick.h">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gameplay\Map.h">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gameplay\Paddle.h">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Physics.h">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gameplay\Wall.h">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utility\Random.h">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Utility\VectorHelper.h">
-      <Filter>Source Files\Utility</Filter>
+      <Filter>Source\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Engine\Screen.h">
-      <Filter>Source Files\Engine</Filter>
+      <Filter>Source\Engine</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Gameplay\RespawnZone.h">
-      <Filter>Source Files\Gameplay</Filter>
+      <Filter>Source\Gameplay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Utility\JsonHelper.h">
+      <Filter>Source\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Settings\BallSettings.h">
+      <Filter>Source\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Settings\BrickSettings.h">
+      <Filter>Source\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Settings\PaddleSettings.h">
+      <Filter>Source\Settings</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,8 +2,8 @@
 #define BRICK_H
 
 #include "Game/Actor.h"
-
 #include "Engine/Physics.h"
+#include "Settings/BrickSettings.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 
@@ -12,7 +12,7 @@ class Brick : public Actor
 	typedef Actor Base;
 
 public:
-	Brick(sf::Vector2f position, sf::Vector2f size);
+	Brick(const BrickSettings& settings);
 	virtual ~Brick();
 
 public:
@@ -27,6 +27,5 @@ public:
 public:
 	sf::RectangleShape m_sprite = sf::RectangleShape();
 	Collider m_collider;
-
 };
 #endif

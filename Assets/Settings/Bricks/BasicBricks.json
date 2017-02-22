@@ -1,0 +1,44 @@
+{
+	"bricks": 
+	[
+		{ "size_x": 90, "size_y": 40, "position_x": 100, "position_y": 50 },
+		{ "size_x": 90, "size_y": 40, "position_x": 200, "position_y": 50 },
+		{ "size_x": 90, "size_y": 40, "position_x": 300, "position_y": 50 },
+		{ "size_x": 90, "size_y": 40, "position_x": 400, "position_y": 50 },
+		{ "size_x": 90, "size_y": 40, "position_x": 500, "position_y": 50 },
+		{ "size_x": 90, "size_y": 40, "position_x": 600, "position_y": 50 },
+		{ "size_x": 90, "size_y": 40, "position_x": 700, "position_y": 50 },
+
+		{ "size_x": 90, "size_y": 40, "position_x": 100, "position_y": 100 },
+		{ "size_x": 90, "size_y": 40, "position_x": 200, "position_y": 100 },
+		{ "size_x": 90, "size_y": 40, "position_x": 300, "position_y": 100 },
+		{ "size_x": 90, "size_y": 40, "position_x": 400, "position_y": 100 },
+		{ "size_x": 90, "size_y": 40, "position_x": 500, "position_y": 100 },
+		{ "size_x": 90, "size_y": 40, "position_x": 600, "position_y": 100 },
+		{ "size_x": 90, "size_y": 40, "position_x": 700, "position_y": 100 },
+
+		{ "size_x": 90, "size_y": 40, "position_x": 100, "position_y": 150 },
+		{ "size_x": 90, "size_y": 40, "position_x": 200, "position_y": 150 },
+		{ "size_x": 90, "size_y": 40, "position_x": 300, "position_y": 150 },
+		{ "size_x": 90, "size_y": 40, "position_x": 400, "position_y": 150 },
+		{ "size_x": 90, "size_y": 40, "position_x": 500, "position_y": 150 },
+		{ "size_x": 90, "size_y": 40, "position_x": 600, "position_y": 150 },
+		{ "size_x": 90, "size_y": 40, "position_x": 700, "position_y": 150 },
+
+		{ "size_x": 90, "size_y": 40, "position_x": 100, "position_y": 200 },
+		{ "size_x": 90, "size_y": 40, "position_x": 200, "position_y": 200 },
+		{ "size_x": 90, "size_y": 40, "position_x": 300, "position_y": 200 },
+		{ "size_x": 90, "size_y": 40, "position_x": 400, "position_y": 200 },
+		{ "size_x": 90, "size_y": 40, "position_x": 500, "position_y": 200 },
+		{ "size_x": 90, "size_y": 40, "position_x": 600, "position_y": 200 },
+		{ "size_x": 90, "size_y": 40, "position_x": 700, "position_y": 200 },
+
+		{ "size_x": 90, "size_y": 40, "position_x": 100, "position_y": 250 },
+		{ "size_x": 90, "size_y": 40, "position_x": 200, "position_y": 250 },
+		{ "size_x": 90, "size_y": 40, "position_x": 300, "position_y": 250 },
+		{ "size_x": 90, "size_y": 40, "position_x": 400, "position_y": 250 },
+		{ "size_x": 90, "size_y": 40, "position_x": 500, "position_y": 250 },
+		{ "size_x": 90, "size_y": 40, "position_x": 600, "position_y": 250 },
+		{ "size_x": 90, "size_y": 40, "position_x": 700, "position_y": 250 }
+	]
+}

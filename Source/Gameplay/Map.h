@@ -1,6 +1,12 @@
 #ifndef MAP_H
 #define MAP_H
 
+#include "Settings/BallSettings.h"
+#include "Settings/BrickSettings.h"
+#include "Settings/PaddleSettings.h"
+//#include "Settings/WallSettings.h"
+
+#include <rapidjson/document.h>
 #include <SFML/Graphics/Text.hpp>
 
 #include <vector>
@@ -32,10 +38,16 @@ public:
 
 private:
 	void CleanupActors();
+	void LoadSettings(const rapidjson::Document& document);
 
 protected:
 	int m_lives = 0;
 	int m_score = 0;
+
+	BallSettings m_ballSettings;
+	std::vector<BrickSettings> m_brickSettings;
+	PaddleSettings m_paddleSettings;
+	//std::vector<WallSettings> m_wallSettings;
 
 	sf::Font m_font;
 	sf::Text m_livesText;

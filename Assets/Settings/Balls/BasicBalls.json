@@ -1,0 +1,8 @@
+{
+	"size_x": 20,
+	"size_y": 20,
+	"position_x": 400,
+	"position_y": 400,
+	"velocity_min": 500,
+	"velocity_max": 1500
+}

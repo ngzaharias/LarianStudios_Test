@@ -12,17 +12,19 @@
 
 #include <SFML/Graphics.hpp>
 
-Ball::Ball()
+Ball::Ball(const BallSettings& settings)
 {
+	m_settings = settings;
+
 	//TODO: settings file/struct
 	m_sprite.setFillColor(sf::Color::Blue);
-	m_sprite.setSize(sf::Vector2f(20.0f, 20.0f));
+	m_sprite.setSize(m_settings.size);
 
-	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
+	m_sprite.setOrigin(m_settings.size / 2.0f);
 
 	Game::GetPhysics()->RegisterCollider(m_collider);
-	m_collider.rectangle.width = m_sprite.getSize().x;
-	m_collider.rectangle.height = m_sprite.getSize().y;
+	m_collider.rectangle.width = m_settings.size.x;
+	m_collider.rectangle.height = m_settings.size.y;
 	m_collider.actor = this;
 
 	 Game::GetPhysics()->RegisterRigidbody(m_rigidbody);
@@ -70,22 +72,24 @@ sf::Vector2f Ball::GetPosition() const
 	return sf::Vector2f(x, y);
 }
 
-void Ball::SetDirection(sf::Vector2f direction)
+void Ball::InfluenceDirection(sf::Vector2f direction)
 {
 	float magnitude = VectorHelper::Magnitude(m_rigidbody.velocity);
+	sf::Vector2f velocityNormal = m_rigidbody.velocity / magnitude;
+	direction = VectorHelper::Normalize(velocityNormal + direction);
 	m_rigidbody.velocity = direction * magnitude;
 }
 
 void Ball::Respawn()
 {
 	//TODO: settings file/class
-	sf::Vector2f direction = sf::Vector2f(Random::Range(-0.5f, 0.5f), Random::Range(-1.0f, 0.1f));
+	sf::Vector2f direction = sf::Vector2f(Random::Range(-0.5f, 0.5f), Random::Range(-1.0f, 0.5f));
 	direction = VectorHelper::Normalize(direction);
 
-	m_rigidbody.velocity = direction * 500.0f;
+	m_rigidbody.velocity = direction * m_settings.velocityMin;
 
-	m_collider.rectangle.left = 400.0f - m_sprite.getOrigin().x;
-	m_collider.rectangle.top = 400.0f - m_sprite.getOrigin().y;
+	m_collider.rectangle.left = m_settings.position.x - m_sprite.getOrigin().x;
+	m_collider.rectangle.top = m_settings.position.y - m_sprite.getOrigin().y;
 }
 
 void Ball::HandleOnCollision(const HitInfo& hitInfo)
@@ -97,7 +101,7 @@ void Ball::HandleOnCollision(const HitInfo& hitInfo)
 		// speed up the ball to a max
 		float magnitude = VectorHelper::Magnitude(m_rigidbody.velocity);
 		sf::Vector2f normal = m_rigidbody.velocity / magnitude;
-		magnitude = Math::Min<float>(magnitude + 100.0f, 1500.0f);
+		magnitude = Math::Min<float>(magnitude + 100.0f, m_settings.velocityMax);
 		m_rigidbody.velocity = normal * magnitude;
 	}
 }

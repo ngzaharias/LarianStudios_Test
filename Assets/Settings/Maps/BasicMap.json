@@ -1,0 +1,10 @@
+{
+	"font": "Assets/Fonts/kenpixel_square.ttf",
+	"lives": "3",
+	"score": "0",
+
+	"balls":"Assets/Settings/Balls/BasicBalls.json",
+	"bricks":"Assets/Settings/Bricks/BasicBricks.json",
+	"paddles":"Assets/Settings/Paddles/BasicPaddles.json",
+	"walls":"Assets/Settings/Walls/BasicWalls.json"
+}

@@ -32,6 +32,10 @@
     <ClCompile Include="..\..\Source\Game\Game.cpp" />
     <ClCompile Include="..\..\Source\Game\GameApplication.cpp" />
     <ClCompile Include="..\..\Source\Main.cpp" />
+    <ClCompile Include="..\..\Source\Settings\BallSettings.cpp" />
+    <ClCompile Include="..\..\Source\Settings\BrickSettings.cpp" />
+    <ClCompile Include="..\..\Source\Settings\PaddleSettings.cpp" />
+    <ClCompile Include="..\..\Source\Utility\JsonHelper.cpp" />
     <ClCompile Include="..\..\Source\Utility\Math.cpp" />
     <ClCompile Include="..\..\Source\Utility\Random.cpp" />
     <ClCompile Include="..\..\Source\Utility\VectorHelper.cpp" />
@@ -49,7 +53,11 @@
     <ClInclude Include="..\..\Source\Game\Actor.h" />
     <ClInclude Include="..\..\Source\Game\Game.h" />
     <ClInclude Include="..\..\Source\Game\GameApplication.h" />
+    <ClInclude Include="..\..\Source\Settings\BallSettings.h" />
+    <ClInclude Include="..\..\Source\Settings\BrickSettings.h" />
+    <ClInclude Include="..\..\Source\Settings\PaddleSettings.h" />
     <ClInclude Include="..\..\Source\Utility\Containers\Grid.h" />
+    <ClInclude Include="..\..\Source\Utility\JsonHelper.h" />
     <ClInclude Include="..\..\Source\Utility\Math.h" />
     <ClInclude Include="..\..\Source\Utility\Random.h" />
     <ClInclude Include="..\..\Source\Utility\VectorHelper.h" />

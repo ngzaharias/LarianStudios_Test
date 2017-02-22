@@ -6,21 +6,21 @@
 
 #include <SFML/Graphics.hpp>
 
-Brick::Brick(sf::Vector2f position, sf::Vector2f size)
+Brick::Brick(const BrickSettings& settings)
 {
-	m_position = position;
+	m_position = settings.position;
 
 	m_sprite.setFillColor(sf::Color::Green);
-	m_sprite.setPosition(m_position);
-	m_sprite.setSize(size);
+	m_sprite.setPosition(settings.position);
+	m_sprite.setSize(settings.size);
 
-	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
+	m_sprite.setOrigin(settings.size / 2.0f);
 
 	Game::GetPhysics()->RegisterCollider(m_collider);
-	m_collider.rectangle.width = m_sprite.getSize().x;
-	m_collider.rectangle.height = m_sprite.getSize().y;
-	m_collider.rectangle.left = m_position.x - m_sprite.getOrigin().x;
-	m_collider.rectangle.top = m_position.y - m_sprite.getOrigin().y;
+	m_collider.rectangle.width = settings.size.x;
+	m_collider.rectangle.height = settings.size.y;
+	m_collider.rectangle.left = settings.position.x - m_sprite.getOrigin().x;
+	m_collider.rectangle.top = settings.position.y - m_sprite.getOrigin().y;
 	m_collider.actor = this;
 }
 

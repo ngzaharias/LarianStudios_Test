@@ -5,30 +5,33 @@
 #include "Gameplay/Map.h"
 #include "Engine/Physics.h"
 #include "Engine/Screen.h"
-
 #include "Utility/Math.h"
 #include "Utility/VectorHelper.h"
 
 #include <SFML/Graphics.hpp>
 
-Paddle::Paddle()
+Paddle::Paddle(const PaddleSettings& settings)
 {
-	m_position = sf::Vector2f(400.0f, 535.0f);
+	m_position = settings.position;
 
 	m_sprite.setFillColor(sf::Color::White);
+	m_sprite.setOrigin(settings.size / 2.0f);
 	m_sprite.setPosition(m_position);
-	m_sprite.setSize(sf::Vector2f(250, 30));
+	m_sprite.setSize(settings.size);
 
-	m_sprite.setOrigin(m_sprite.getSize() / 2.0f);
+	Game::GetPhysics()->RegisterCollider(m_collider);
+	m_collider.rectangle.width = settings.size.x;
+	m_collider.rectangle.height = settings.size.y;
+	m_collider.actor = this;
 
-	// colliders
-	InitaliseColliders();
+	m_collider.callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
+
+	SyncColliders();
 }
 
 Paddle::~Paddle()
 {
-	Game::GetPhysics()->UnregisterCollider(m_colliderLeft);
-	Game::GetPhysics()->UnregisterCollider(m_colliderRight);
+	Game::GetPhysics()->UnregisterCollider(m_collider);
 }
 
 void Paddle::Initialise()
@@ -73,60 +76,30 @@ void Paddle::HandleOnCollision(const HitInfo& hitInfo)
 	Ball* ball = dynamic_cast<Ball*>(hitInfo.colliderB->actor);
 	if (ball != nullptr)
 	{
-		bool isLeft = hitInfo.colliderA == &m_colliderLeft;
+		sf::Vector2f ballPosition = ball->GetPosition();
+		sf::Vector2f paddlePosition = this->GetPosition();
+		sf::Vector2f normal = VectorHelper::Normalize(ballPosition - paddlePosition);
 
-		sf::Vector2f direction = sf::Vector2f(0.0f, -1.0f);
-		direction.x += (isLeft) ? -1.0f : 1.0f;
-		direction = VectorHelper::Normalize(direction);
-
-		ball->SetDirection(direction);
+		float dot = VectorHelper::Dot(normal, sf::Vector2f(0.0f, -1.0f)); 
+		float influenceX = Math::Clamp(normal.x, -1.0f, 1.0f);
+		float influenceY = -Math::Clamp(dot + 0.2f, 0.0f, 1.0f);
+		sf::Vector2f direction = sf::Vector2f(influenceX, influenceY);
+		ball->InfluenceDirection(direction);
 	}
 }
 
-void Paddle::InitaliseColliders()
-{
-	Game::GetPhysics()->RegisterCollider(m_colliderLeft);
-	Game::GetPhysics()->RegisterCollider(m_colliderRight);
-
-	float colliderWidth = m_sprite.getSize().x / 2;
-	m_colliderLeft.rectangle.width = colliderWidth;
-	m_colliderLeft.rectangle.height = m_sprite.getSize().y;
-	m_colliderLeft.actor = this;
-	m_colliderLeft.callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
-
-	m_colliderRight.rectangle.width = colliderWidth;
-	m_colliderRight.rectangle.height = m_sprite.getSize().y;
-	m_colliderRight.actor = this;
-	m_colliderRight.callback = std::bind(&Paddle::HandleOnCollision, this, std::placeholders::_1);
-
-	SyncColliders();
-}
 
 void Paddle::SyncColliders()
 {
-	float colliderWidth = m_sprite.getSize().x / 2;
-	m_colliderLeft.rectangle.left = m_position.x - m_sprite.getOrigin().x + (colliderWidth * 0);
-	m_colliderLeft.rectangle.top = m_position.y - m_sprite.getOrigin().y;
-
-	m_colliderRight.rectangle.left = m_position.x - m_sprite.getOrigin().x + (colliderWidth * 1);
-	m_colliderRight.rectangle.top = m_position.y - m_sprite.getOrigin().y;
+	m_collider.rectangle.left = m_position.x - m_sprite.getOrigin().x;
+	m_collider.rectangle.top = m_position.y - m_sprite.getOrigin().y;
 }
 
 void Paddle::Debug_DrawColliders(sf::RenderWindow* window)
 {
-	float colliderWidth = m_sprite.getSize().x / 2;
-	sf::RectangleShape left = sf::RectangleShape();
-	sf::RectangleShape right = sf::RectangleShape();
-
-	left.setSize(sf::Vector2f(colliderWidth, m_sprite.getSize().y));
-	right.setSize(sf::Vector2f(colliderWidth, m_sprite.getSize().y));
-
-	left.setPosition(sf::Vector2f(m_colliderLeft.rectangle.left, m_colliderLeft.rectangle.top));
-	right.setPosition(sf::Vector2f(m_colliderRight.rectangle.left, m_colliderRight.rectangle.top));
-
-	left.setFillColor(sf::Color::Blue);
-	right.setFillColor(sf::Color::Blue);
-
-	window->draw(left);
-	window->draw(right);
+	sf::RectangleShape box = sf::RectangleShape();
+	box.setPosition(sf::Vector2f(m_collider.rectangle.left, m_collider.rectangle.top));
+	box.setSize(sf::Vector2f(m_sprite.getSize().x, m_sprite.getSize().y));
+	box.setFillColor(sf::Color::Blue);
+	window->draw(box);
 }
